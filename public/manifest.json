@@ -1,0 +1,17 @@
+{
+  "name": "RentSync — Smart Property Management",
+  "short_name": "RentSync",
+  "description": "RentSync helps Kenyan landlords track rent, tenants, maintenance and finances.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0b1f3f",
+  "icons": [
+    {
+      "src": "/rentsync-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

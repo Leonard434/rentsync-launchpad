@@ -21,14 +21,21 @@ import {
   HeartHandshake,
   Sparkles,
   Target,
+  Facebook,
+  Instagram,
+  Twitter,
+  Linkedin,
+  MessageCircle,
 } from "lucide-react";
-import logoAsset from "@/assets/rentsync-logo.png.asset.json";
 
 export const Route = createFileRoute("/")({
   component: Index,
 });
 
 const LOGIN_URL = "https://rent-sync-theta.vercel.app/login";
+const PHONE_DISPLAY = "0758 445 536";
+const PHONE_TEL = "tel:+254758445536";
+const WHATSAPP_URL = "https://wa.me/254758445536";
 
 const services = [
   {
@@ -121,7 +128,7 @@ const whyPoints = [
 ];
 
 function Logo({ className = "h-10" }: { className?: string }) {
-  return <img src={logoAsset.url} alt="RentSync — Smart Property Management" className={className} />;
+  return <img src="/rentsync-logo.png" alt="RentSync — Smart Property Management" className={className} />;
 }
 
 function Nav() {
@@ -472,9 +479,9 @@ function Contact() {
         <div className="mt-14 grid gap-8 lg:grid-cols-12">
           <div className="space-y-4 lg:col-span-4">
             {[
-              { icon: Phone, label: "Phone / WhatsApp", value: "+254 700 000 000" },
-              { icon: Mail, label: "Email", value: "hello@rentsync.co.ke" },
-              { icon: MapPin, label: "Location", value: "Nairobi, Kenya" },
+              { icon: Phone, label: "Phone", value: PHONE_DISPLAY, href: PHONE_TEL },
+              { icon: Mail, label: "Email", value: "hello@rentsync.co.ke", href: "mailto:hello@rentsync.co.ke" },
+              { icon: MapPin, label: "Location", value: "Nairobi, Kenya", href: null },
             ].map((c) => (
               <div
                 key={c.label}
@@ -487,10 +494,25 @@ function Contact() {
                   <p className="text-[11px] font-bold uppercase tracking-widest text-slate-500">
                     {c.label}
                   </p>
-                  <p className="mt-1 text-base font-semibold text-slate-900">{c.value}</p>
+                  {c.href ? (
+                    <a href={c.href} className="mt-1 block text-base font-semibold text-slate-900 hover:text-amber-600">
+                      {c.value}
+                    </a>
+                  ) : (
+                    <p className="mt-1 text-base font-semibold text-slate-900">{c.value}</p>
+                  )}
                 </div>
               </div>
             ))}
+
+            <a
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-green-500 px-6 py-4 text-xs font-bold uppercase tracking-[0.2em] text-white transition hover:bg-green-600"
+            >
+              <MessageCircle className="h-4 w-4" /> Chat on WhatsApp
+            </a>
 
             <a
               href={LOGIN_URL}
@@ -605,7 +627,25 @@ function Footer() {
             </ul>
           </div>
         </div>
-        <div className="mt-12 border-t border-white/10 pt-6 text-center text-xs text-slate-500 sm:flex sm:items-center sm:justify-between sm:text-left">
+        <div className="mt-10 flex items-center justify-center gap-4 border-t border-white/10 pt-8 sm:justify-start">
+          <a href="#" aria-label="Facebook" className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-slate-300 transition hover:border-amber-400 hover:text-amber-400">
+            <Facebook className="h-4 w-4" />
+          </a>
+          <a href="#" aria-label="Instagram" className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-slate-300 transition hover:border-amber-400 hover:text-amber-400">
+            <Instagram className="h-4 w-4" />
+          </a>
+          <a href="#" aria-label="X" className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-slate-300 transition hover:border-amber-400 hover:text-amber-400">
+            <Twitter className="h-4 w-4" />
+          </a>
+          <a href="#" aria-label="TikTok" className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-slate-300 transition hover:border-amber-400 hover:text-amber-400">
+            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor"><path d="M16.6 5.82s.51.5 0 0A4.278 4.278 0 0 1 15.54 3h-3.09v12.4a2.592 2.592 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6 0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64 0 3.33 2.76 5.7 5.69 5.7 3.14 0 5.69-2.55 5.69-5.7V9.01a7.35 7.35 0 0 0 4.31 1.38V7.3s-1.88.09-3.24-1.48z"/></svg>
+          </a>
+          <a href="#" aria-label="LinkedIn" className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-slate-300 transition hover:border-amber-400 hover:text-amber-400">
+            <Linkedin className="h-4 w-4" />
+          </a>
+        </div>
+
+        <div className="mt-6 border-t border-white/10 pt-6 text-center text-xs text-slate-500 sm:flex sm:items-center sm:justify-between sm:text-left">
           © 2026 RentSync. Smart Property Management.
           <span className="mt-2 block sm:mt-0">Made for Kenyan landlords.</span>
         </div>

@@ -253,7 +253,7 @@ function Hero() {
               href="#contact"
               className="inline-flex items-center justify-center rounded-md border border-white/25 px-7 py-4 text-xs font-bold uppercase tracking-[0.2em] text-white transition hover:bg-white/5"
             >
-              Request a Demo
+              Need clarification?
             </a>
           </div>
         </div>

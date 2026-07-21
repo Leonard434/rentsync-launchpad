@@ -161,7 +161,7 @@ function Nav() {
             </a>
           ))}
         </nav>
-        <div className="hidden md:block">
+        <div className="block">
           <a
             href={LOGIN_URL}
             className="inline-flex items-center justify-center rounded-md bg-amber-500 px-5 py-3 text-xs font-bold uppercase tracking-widest text-slate-900 shadow-sm transition hover:bg-amber-400"
@@ -598,9 +598,22 @@ function Field({
   );
 }
 
+function StickyMobileCTA() {
+  return (
+    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 backdrop-blur px-4 py-3 shadow-[0_-4px_12px_rgba(0,0,0,0.06)] md:hidden">
+      <a
+        href={LOGIN_URL}
+        className="flex w-full items-center justify-center rounded-md bg-amber-500 px-5 py-3.5 text-sm font-bold uppercase tracking-widest text-slate-900 shadow-sm transition hover:bg-amber-400"
+      >
+        Get Started Free
+      </a>
+    </div>
+  );
+}
+
 function Footer() {
   return (
-    <footer className="bg-[#081a35] pt-16 pb-8 text-slate-300">
+    <footer className="bg-[#081a35] pt-16 pb-24 text-slate-300 md:pb-8">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-10 md:grid-cols-4">
           <div className="md:col-span-2">
@@ -666,6 +679,7 @@ function Index() {
         <Contact />
       </main>
       <Footer />
+      <StickyMobileCTA />
     </div>
   );
 }

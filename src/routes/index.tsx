@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import {
   Users,
@@ -160,6 +160,12 @@ function Nav() {
               {l.label}
             </a>
           ))}
+          <Link
+            to="/listings"
+            className="text-sm font-semibold uppercase tracking-wider text-slate-700 transition hover:text-amber-600"
+          >
+            Vacant Listings
+          </Link>
         </nav>
         <div className="block">
           <a
@@ -190,6 +196,13 @@ function Nav() {
                 {l.label}
               </a>
             ))}
+            <Link
+              to="/listings"
+              onClick={() => setOpen(false)}
+              className="rounded-lg px-3 py-2 text-sm font-semibold uppercase tracking-wider text-slate-700 hover:bg-slate-100"
+            >
+              Vacant Listings
+            </Link>
             <a
               href={LOGIN_URL}
               className="mt-2 inline-flex items-center justify-center rounded-md bg-amber-500 px-5 py-3 text-xs font-bold uppercase tracking-widest text-slate-900"

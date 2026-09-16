@@ -40,7 +40,8 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const LOGIN_URL = "https://rent-sync-theta.vercel.app/login";
+const GET_STARTED_URL = "https://app.rentsync.co.ke/login?view=register";
+const SIGN_IN_URL = "https://app.rentsync.co.ke/login";
 const PHONE_DISPLAY = "0758 445 536";
 const PHONE_TEL = "tel:+254758445536";
 const WHATSAPP_URL = "https://wa.me/254758445536";
@@ -169,7 +170,7 @@ function Nav() {
         </nav>
         <div className="block">
           <a
-            href={LOGIN_URL}
+            href={GET_STARTED_URL}
             className="inline-flex items-center justify-center rounded-md bg-brand-500 px-5 py-3 text-xs font-bold uppercase tracking-widest text-white shadow-sm transition hover:bg-brand-400"
           >
             Get Started
@@ -204,7 +205,7 @@ function Nav() {
               Vacant Listings
             </Link>
             <a
-              href={LOGIN_URL}
+              href={GET_STARTED_URL}
               className="mt-2 inline-flex items-center justify-center rounded-md bg-brand-500 px-5 py-3 text-xs font-bold uppercase tracking-widest text-white"
             >
               Get Started
@@ -622,7 +623,7 @@ function Contact() {
             </a>
 
             <a
-              href={LOGIN_URL}
+              href={SIGN_IN_URL}
               className="mt-2 inline-flex w-full items-center justify-center rounded-md bg-brand-500 px-6 py-4 text-xs font-bold uppercase tracking-[0.2em] text-white transition hover:bg-brand-400"
             >
               Or Sign In Now
@@ -718,7 +719,7 @@ function StickyMobileCTA() {
   return (
     <div className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 backdrop-blur px-4 py-3 shadow-[0_-4px_12px_rgba(0,0,0,0.06)] md:hidden">
       <a
-        href={LOGIN_URL}
+        href={GET_STARTED_URL}
         className="flex w-full items-center justify-center rounded-md bg-brand-500 px-5 py-3.5 text-sm font-bold uppercase tracking-widest text-white shadow-sm transition hover:bg-brand-400"
       >
         Get Started Free

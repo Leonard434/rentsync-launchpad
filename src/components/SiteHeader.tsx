@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 
-const LOGIN_URL = "https://rent-sync-theta.vercel.app/login";
+const GET_STARTED_URL = "https://app.rentsync.co.ke/login?view=register";
 
 export default function SiteHeader() {
   return (
@@ -33,7 +33,7 @@ export default function SiteHeader() {
           </Link>
         </nav>
         <a
-          href={LOGIN_URL}
+          href={GET_STARTED_URL}
           className="inline-flex items-center justify-center rounded-md bg-brand-500 px-5 py-3 text-xs font-bold uppercase tracking-widest text-white shadow-sm transition hover:bg-brand-400"
         >
           Get Started

@@ -360,11 +360,18 @@ function ListingCard({ listing }: { listing: VacantListing }) {
         )}
       </div>
       <div className="flex flex-1 flex-col gap-1 p-5">
-        {listing.unit_type && (
-          <span className="w-fit rounded-full bg-brand-100 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide text-brand-700">
-            {listing.unit_type}
-          </span>
-        )}
+        <div className="flex flex-wrap items-center gap-1.5">
+          {listing.unit_type && (
+            <span className="w-fit rounded-full bg-brand-100 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide text-brand-700">
+              {listing.unit_type}
+            </span>
+          )}
+          {listing.units_available > 1 && (
+            <span className="w-fit rounded-full bg-green-100 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide text-green-700">
+              {listing.units_available} available
+            </span>
+          )}
+        </div>
         <h3 className="mt-1 text-base font-semibold text-slate-900">{listing.title}</h3>
         <p className="flex items-center gap-1 text-sm text-slate-500">
           <MapPin className="h-3.5 w-3.5 shrink-0" /> {location}

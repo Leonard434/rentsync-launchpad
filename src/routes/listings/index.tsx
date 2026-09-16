@@ -75,7 +75,14 @@ function ListingCard({ listing }: { listing: VacantListing }) {
         )}
       </div>
       <div className="flex flex-1 flex-col gap-1 p-4">
-        <h3 className="mt-1 text-base font-semibold text-slate-900">{listing.title}</h3>
+        <div className="flex items-start justify-between gap-2">
+          <h3 className="mt-1 text-base font-semibold text-slate-900">{listing.title}</h3>
+          {listing.units_available > 1 && (
+            <Badge variant="secondary" className="shrink-0 bg-brand-100 text-brand-700">
+              {listing.units_available} available
+            </Badge>
+          )}
+        </div>
         <p className="flex items-center gap-1 text-sm text-slate-500">
           <MapPin className="h-3.5 w-3.5 shrink-0" /> {location}
         </p>
@@ -455,7 +462,7 @@ function ListingsIndex() {
                 <h2 className="mb-5 flex items-baseline gap-2 text-xl font-bold text-slate-900">
                   {unitType}
                   <span className="text-sm font-medium text-slate-400">
-                    ({group.length} vacant)
+                    ({group.reduce((sum, l) => sum + (l.units_available || 1), 0)} vacant)
                   </span>
                 </h2>
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">

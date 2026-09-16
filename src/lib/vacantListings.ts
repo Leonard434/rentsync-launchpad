@@ -16,6 +16,7 @@ export type VacantListing = {
   rent: number;
   deposit: number;
   photos: string[];
+  units_available: number;
   published_at: string;
   property_name: string;
   property_location: string;

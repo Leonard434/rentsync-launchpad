@@ -7,6 +7,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import {
   getVacantListing,
   contactVacantListingLead,
   formatKes,
@@ -147,34 +154,49 @@ function ListingDetail() {
 
         <div className="mt-4 grid gap-8 lg:grid-cols-3">
           <div className="lg:col-span-2">
-            <div className="aspect-[4/3] w-full overflow-hidden rounded-xl bg-slate-100">
-              {photos[0] ? (
-                <img src={photos[0]} alt={listing.title} className="h-full w-full object-cover" />
-              ) : (
+            {photos.length > 0 ? (
+              <Carousel className="w-full">
+                <CarouselContent>
+                  {photos.map((url, i) => (
+                    <CarouselItem key={url}>
+                      <div className="aspect-[4/3] w-full overflow-hidden rounded-xl bg-slate-100">
+                        <img
+                          src={url}
+                          alt={`${listing.title} — photo ${i + 1} of ${photos.length}`}
+                          className="h-full w-full object-cover"
+                        />
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                {photos.length > 1 && (
+                  <>
+                    <CarouselPrevious className="left-2" />
+                    <CarouselNext className="right-2" />
+                  </>
+                )}
+              </Carousel>
+            ) : (
+              <div className="aspect-[4/3] w-full overflow-hidden rounded-xl bg-slate-100">
                 <div className="flex h-full w-full items-center justify-center text-slate-300">
                   <UnitTypeIcon unitType={listing.unit_type} className="h-16 w-16" />
                 </div>
-              )}
-            </div>
-            {photos.length > 1 && (
-              <div className="mt-3 grid grid-cols-2 gap-3">
-                {photos.slice(1).map((url) => (
-                  <img
-                    key={url}
-                    src={url}
-                    alt={listing.title}
-                    className="aspect-[4/3] w-full rounded-lg object-cover"
-                  />
-                ))}
               </div>
             )}
 
             <div className="mt-6">
-              {listing.unit_type && (
-                <span className="w-fit rounded-full bg-brand-100 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide text-brand-700">
-                  {listing.unit_type}
-                </span>
-              )}
+              <div className="flex flex-wrap items-center gap-2">
+                {listing.unit_type && (
+                  <span className="w-fit rounded-full bg-brand-100 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide text-brand-700">
+                    {listing.unit_type}
+                  </span>
+                )}
+                {listing.units_available > 1 && (
+                  <span className="w-fit rounded-full bg-green-100 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide text-green-700">
+                    {listing.units_available} units available
+                  </span>
+                )}
+              </div>
               <h1 className="mt-2 text-2xl font-bold text-slate-900 sm:text-3xl">
                 {listing.title}
               </h1>

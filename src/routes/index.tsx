@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { listVacantListings, formatKes, type VacantListing } from "@/lib/vacantListings";
+import { listVacantListings, formatKes, displayPhotos, type VacantListing } from "@/lib/vacantListings";
+import UnitTypeIcon from "@/components/UnitTypeIcon";
 import {
   Users,
   Receipt,
@@ -334,7 +335,8 @@ function Services() {
 }
 
 function ListingCard({ listing }: { listing: VacantListing }) {
-  const photo = listing.photos?.[0];
+  const photo = displayPhotos(listing)[0];
+  const location = listing.detailed_location || listing.property_location;
   return (
     <Link
       to="/listings/$id"
@@ -351,7 +353,7 @@ function ListingCard({ listing }: { listing: VacantListing }) {
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center text-slate-300">
-            <HomeIcon className="h-12 w-12" />
+            <UnitTypeIcon unitType={listing.unit_type} />
           </div>
         )}
       </div>
@@ -363,7 +365,7 @@ function ListingCard({ listing }: { listing: VacantListing }) {
         )}
         <h3 className="mt-1 text-base font-semibold text-slate-900">{listing.title}</h3>
         <p className="flex items-center gap-1 text-sm text-slate-500">
-          <MapPin className="h-3.5 w-3.5 shrink-0" /> {listing.property_location}
+          <MapPin className="h-3.5 w-3.5 shrink-0" /> {location}
         </p>
         <p className="mt-2 text-lg font-bold text-[#0b1f3f]">
           {formatKes(listing.rent)}

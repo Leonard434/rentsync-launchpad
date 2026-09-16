@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { MapPin, Home as HomeIcon } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
-import { listVacantListings, formatKes, type VacantListing } from "@/lib/vacantListings";
+import UnitTypeIcon from "@/components/UnitTypeIcon";
+import { listVacantListings, formatKes, displayPhotos, type VacantListing } from "@/lib/vacantListings";
 
 export const Route = createFileRoute("/listings/")({
   loader: async () => {
@@ -28,7 +29,8 @@ export const Route = createFileRoute("/listings/")({
 });
 
 function ListingCard({ listing }: { listing: VacantListing }) {
-  const photo = listing.photos?.[0];
+  const photo = displayPhotos(listing)[0];
+  const location = listing.detailed_location || listing.property_location;
   return (
     <Link
       to="/listings/$id"
@@ -45,19 +47,14 @@ function ListingCard({ listing }: { listing: VacantListing }) {
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center text-slate-300">
-            <HomeIcon className="h-12 w-12" />
+            <UnitTypeIcon unitType={listing.unit_type} />
           </div>
         )}
       </div>
       <div className="flex flex-1 flex-col gap-1 p-4">
-        {listing.unit_type && (
-          <span className="w-fit rounded-full bg-brand-100 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide text-brand-700">
-            {listing.unit_type}
-          </span>
-        )}
         <h3 className="mt-1 text-base font-semibold text-slate-900">{listing.title}</h3>
         <p className="flex items-center gap-1 text-sm text-slate-500">
-          <MapPin className="h-3.5 w-3.5 shrink-0" /> {listing.property_location}
+          <MapPin className="h-3.5 w-3.5 shrink-0" /> {location}
         </p>
         <p className="mt-2 text-lg font-bold text-[#0b1f3f]">
           {formatKes(listing.rent)}
@@ -70,6 +67,13 @@ function ListingCard({ listing }: { listing: VacantListing }) {
 
 function ListingsIndex() {
   const { listings } = Route.useLoaderData();
+
+  const groups = new Map<string, VacantListing[]>();
+  for (const listing of listings) {
+    const key = listing.unit_type || "Other Units";
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key)!.push(listing);
+  }
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -97,9 +101,21 @@ function ListingsIndex() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {listings.map((listing) => (
-              <ListingCard key={listing.id} listing={listing} />
+          <div className="space-y-14">
+            {Array.from(groups.entries()).map(([unitType, group]) => (
+              <div key={unitType}>
+                <h2 className="mb-5 flex items-baseline gap-2 text-xl font-bold text-slate-900">
+                  {unitType}
+                  <span className="text-sm font-medium text-slate-400">
+                    ({group.length} vacant)
+                  </span>
+                </h2>
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {group.map((listing) => (
+                    <ListingCard key={listing.id} listing={listing} />
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         )}

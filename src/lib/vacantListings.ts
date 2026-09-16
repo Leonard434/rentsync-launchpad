@@ -19,8 +19,22 @@ export type VacantListing = {
   published_at: string;
   property_name: string;
   property_location: string;
+  detailed_location: string | null;
+  contact_phone: string | null;
   unit_type: string | null;
 };
+
+const MAX_DISPLAY_PHOTOS = 3;
+
+export function displayPhotos(listing: Pick<VacantListing, "photos">): string[] {
+  return (listing.photos ?? []).slice(0, MAX_DISPLAY_PHOTOS);
+}
+
+export function whatsappLink(phone: string, message?: string): string {
+  const digits = phone.replace(/\D/g, "").replace(/^0/, "254");
+  const text = message ? `?text=${encodeURIComponent(message)}` : "";
+  return `https://wa.me/${digits}${text}`;
+}
 
 async function callRpc<T>(fn: string, args: Record<string, unknown>): Promise<T> {
   const response = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, {

@@ -1,7 +1,8 @@
 import { useState, type FormEvent } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { MapPin, Home as HomeIcon, ShieldCheck, ArrowLeft } from "lucide-react";
+import { MapPin, ShieldCheck, ArrowLeft, MessageCircle, Phone } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
+import UnitTypeIcon from "@/components/UnitTypeIcon";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -9,6 +10,8 @@ import {
   getVacantListing,
   contactVacantListingLead,
   formatKes,
+  displayPhotos,
+  whatsappLink,
   type VacantListing,
 } from "@/lib/vacantListings";
 
@@ -127,7 +130,8 @@ function ContactForm({ listing }: { listing: VacantListing }) {
 
 function ListingDetail() {
   const { listing } = Route.useLoaderData();
-  const photos = listing.photos?.length ? listing.photos : [];
+  const photos = displayPhotos(listing);
+  const location = listing.detailed_location || listing.property_location;
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -148,18 +152,18 @@ function ListingDetail() {
                 <img src={photos[0]} alt={listing.title} className="h-full w-full object-cover" />
               ) : (
                 <div className="flex h-full w-full items-center justify-center text-slate-300">
-                  <HomeIcon className="h-16 w-16" />
+                  <UnitTypeIcon unitType={listing.unit_type} className="h-16 w-16" />
                 </div>
               )}
             </div>
             {photos.length > 1 && (
-              <div className="mt-3 grid grid-cols-4 gap-3 sm:grid-cols-5">
+              <div className="mt-3 grid grid-cols-2 gap-3">
                 {photos.slice(1).map((url) => (
                   <img
                     key={url}
                     src={url}
                     alt={listing.title}
-                    className="aspect-square w-full rounded-lg object-cover"
+                    className="aspect-[4/3] w-full rounded-lg object-cover"
                   />
                 ))}
               </div>
@@ -175,7 +179,7 @@ function ListingDetail() {
                 {listing.title}
               </h1>
               <p className="mt-1 flex items-center gap-1 text-slate-500">
-                <MapPin className="h-4 w-4 shrink-0" /> {listing.property_location}
+                <MapPin className="h-4 w-4 shrink-0" /> {location}
               </p>
               <p className="mt-4 text-3xl font-bold text-[#0b1f3f]">
                 {formatKes(listing.rent)}
@@ -197,6 +201,29 @@ function ListingDetail() {
                 This listing comes from a verified, active RentSync landlord. Never send money
                 before viewing the property in person.
               </p>
+
+              {listing.contact_phone && (
+                <div className="mb-4 space-y-2 border-b border-slate-100 pb-4">
+                  <a
+                    href={whatsappLink(
+                      listing.contact_phone,
+                      `Hi, I'm interested in "${listing.title}" (${formatKes(listing.rent)}/month) on RentSync.`,
+                    )}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex w-full items-center justify-center gap-2 rounded-md bg-green-500 px-4 py-3 text-sm font-bold text-white transition hover:bg-green-600"
+                  >
+                    <MessageCircle className="h-4 w-4" /> Chat on WhatsApp
+                  </a>
+                  <a
+                    href={`tel:${listing.contact_phone}`}
+                    className="flex w-full items-center justify-center gap-2 rounded-md border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                  >
+                    <Phone className="h-4 w-4" /> {listing.contact_phone}
+                  </a>
+                </div>
+              )}
+
               <ContactForm listing={listing} />
             </div>
           </div>

@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { listVacantListings, formatKes, type VacantListing } from "@/lib/vacantListings";
 import {
   Users,
   Receipt,
@@ -26,9 +27,15 @@ import {
   Twitter,
   Linkedin,
   MessageCircle,
+  Home as HomeIcon,
+  ArrowRight,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
+  loader: async () => {
+    const featuredListings = await listVacantListings({ limit: 3 });
+    return { featuredListings };
+  },
   component: Index,
 });
 
@@ -137,7 +144,7 @@ function Nav() {
         <a href="#top" className="flex items-center gap-3">
           <Logo className="h-10 sm:h-11" />
           <div className="hidden flex-col leading-tight sm:flex">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-600">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-600">
               Smart Property Management
             </span>
           </div>
@@ -147,14 +154,14 @@ function Nav() {
             <a
               key={l.href}
               href={l.href}
-              className="text-sm font-semibold uppercase tracking-wider text-slate-700 transition hover:text-amber-600"
+              className="text-sm font-semibold uppercase tracking-wider text-slate-700 transition hover:text-brand-600"
             >
               {l.label}
             </a>
           ))}
           <Link
             to="/listings"
-            className="text-sm font-semibold uppercase tracking-wider text-slate-700 transition hover:text-amber-600"
+            className="text-sm font-semibold uppercase tracking-wider text-slate-700 transition hover:text-brand-600"
           >
             Vacant Listings
           </Link>
@@ -162,7 +169,7 @@ function Nav() {
         <div className="block">
           <a
             href={LOGIN_URL}
-            className="inline-flex items-center justify-center rounded-md bg-amber-500 px-5 py-3 text-xs font-bold uppercase tracking-widest text-slate-900 shadow-sm transition hover:bg-amber-400"
+            className="inline-flex items-center justify-center rounded-md bg-brand-500 px-5 py-3 text-xs font-bold uppercase tracking-widest text-white shadow-sm transition hover:bg-brand-400"
           >
             Get Started
           </a>
@@ -197,7 +204,7 @@ function Nav() {
             </Link>
             <a
               href={LOGIN_URL}
-              className="mt-2 inline-flex items-center justify-center rounded-md bg-amber-500 px-5 py-3 text-xs font-bold uppercase tracking-widest text-slate-900"
+              className="mt-2 inline-flex items-center justify-center rounded-md bg-brand-500 px-5 py-3 text-xs font-bold uppercase tracking-widest text-white"
             >
               Get Started
             </a>
@@ -230,13 +237,13 @@ function Hero() {
       <div className="relative mx-auto grid max-w-7xl gap-16 px-4 py-20 sm:px-6 sm:py-28 lg:grid-cols-12 lg:gap-8 lg:px-8 lg:py-36">
         <div className="lg:col-span-7">
           <h1 className="font-serif-display text-5xl leading-[1.05] text-white sm:text-6xl lg:text-7xl">
-            Every <em className="not-italic text-amber-400 [font-style:italic]">Property,</em>
+            Every <em className="not-italic text-brand-400 [font-style:italic]">Property,</em>
             <br />
-            Every <em className="not-italic text-amber-400 [font-style:italic]">Shilling,</em>
+            Every <em className="not-italic text-brand-400 [font-style:italic]">Shilling,</em>
             <br />
             Every Tenant.
           </h1>
-          <p className="mt-6 text-[11px] font-bold uppercase tracking-[0.28em] text-amber-400">
+          <p className="mt-6 text-[11px] font-bold uppercase tracking-[0.28em] text-brand-400">
             RentSync — Smart Property Management
           </p>
           <p className="mt-6 max-w-xl text-base leading-relaxed text-slate-300 sm:text-lg">
@@ -247,7 +254,7 @@ function Hero() {
           <div className="mt-10 flex flex-col gap-3 sm:flex-row">
             <a
               href="#services"
-              className="inline-flex items-center justify-center rounded-md bg-amber-500 px-7 py-4 text-xs font-bold uppercase tracking-[0.2em] text-slate-900 shadow-lg shadow-amber-500/20 transition hover:bg-amber-400"
+              className="inline-flex items-center justify-center rounded-md bg-brand-500 px-7 py-4 text-xs font-bold uppercase tracking-[0.2em] text-white shadow-lg shadow-brand-500/20 transition hover:bg-brand-400"
             >
               Our Services
             </a>
@@ -276,7 +283,7 @@ function Hero() {
           </div>
         </div>
       </div>
-      <div className="absolute inset-x-0 bottom-0 h-1 bg-amber-500" aria-hidden />
+      <div className="absolute inset-x-0 bottom-0 h-1 bg-brand-500" aria-hidden />
     </section>
   );
 }
@@ -286,11 +293,11 @@ function Services() {
     <section id="services" className="bg-white py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-amber-600">
+          <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-brand-600">
             What We Offer
           </p>
           <h2 className="mt-4 font-serif-display text-4xl text-slate-900 sm:text-5xl lg:text-6xl">
-            Our <em className="text-amber-500">Services</em>
+            Our <em className="text-brand-500">Services</em>
           </h2>
           <p className="mt-6 text-base leading-relaxed text-slate-600 sm:text-lg">
             From onboarding your first tenant to closing the books at month-end, RentSync delivers a
@@ -306,10 +313,10 @@ function Services() {
               className="group relative flex flex-col bg-white p-8 transition hover:bg-[#0b1f3f]"
             >
               <div className="flex items-center justify-between">
-                <span className="font-serif-display text-3xl text-amber-500">
+                <span className="font-serif-display text-3xl text-brand-500">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <s.icon className="h-6 w-6 text-slate-400 transition group-hover:text-amber-400" />
+                <s.icon className="h-6 w-6 text-slate-400 transition group-hover:text-brand-400" />
               </div>
               <h3 className="mt-6 font-serif-display text-2xl leading-tight text-slate-900 transition group-hover:text-white">
                 {s.title}
@@ -317,9 +324,97 @@ function Services() {
               <p className="mt-3 text-sm leading-relaxed text-slate-600 transition group-hover:text-slate-300">
                 {s.body}
               </p>
-              <div className="mt-6 h-[2px] w-10 bg-amber-500" />
+              <div className="mt-6 h-[2px] w-10 bg-brand-500" />
             </div>
           ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ListingCard({ listing }: { listing: VacantListing }) {
+  const photo = listing.photos?.[0];
+  return (
+    <Link
+      to="/listings/$id"
+      params={{ id: String(listing.id) }}
+      className="group flex flex-col overflow-hidden rounded-sm border border-slate-200 bg-white shadow-sm transition hover:shadow-md"
+    >
+      <div className="aspect-[4/3] w-full overflow-hidden bg-slate-100">
+        {photo ? (
+          <img
+            src={photo}
+            alt={listing.title}
+            className="h-full w-full object-cover transition group-hover:scale-105"
+            loading="lazy"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-slate-300">
+            <HomeIcon className="h-12 w-12" />
+          </div>
+        )}
+      </div>
+      <div className="flex flex-1 flex-col gap-1 p-5">
+        {listing.unit_type && (
+          <span className="w-fit rounded-full bg-brand-100 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide text-brand-700">
+            {listing.unit_type}
+          </span>
+        )}
+        <h3 className="mt-1 text-base font-semibold text-slate-900">{listing.title}</h3>
+        <p className="flex items-center gap-1 text-sm text-slate-500">
+          <MapPin className="h-3.5 w-3.5 shrink-0" /> {listing.property_location}
+        </p>
+        <p className="mt-2 text-lg font-bold text-[#0b1f3f]">
+          {formatKes(listing.rent)}
+          <span className="text-sm font-medium text-slate-500">/month</span>
+        </p>
+      </div>
+    </Link>
+  );
+}
+
+function FeaturedListings() {
+  const { featuredListings } = Route.useLoaderData();
+
+  return (
+    <section id="listings" className="bg-slate-50 py-24 sm:py-32">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-brand-600">
+            Vacant Now
+          </p>
+          <h2 className="mt-4 font-serif-display text-4xl text-slate-900 sm:text-5xl lg:text-6xl">
+            Houses <em className="text-brand-500">Ready to Rent</em>
+          </h2>
+          <p className="mt-6 text-base leading-relaxed text-slate-600 sm:text-lg">
+            Real vacant units from verified, active RentSync landlords — updated as landlords
+            publish them. Never send money before viewing in person.
+          </p>
+        </div>
+
+        {featuredListings.length === 0 ? (
+          <div className="mt-16 rounded-sm border border-dashed border-slate-300 bg-white py-16 text-center">
+            <HomeIcon className="mx-auto h-10 w-10 text-slate-300" />
+            <p className="mt-4 text-sm font-medium text-slate-500">
+              No vacant units listed right now — check back soon.
+            </p>
+          </div>
+        ) : (
+          <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {featuredListings.map((listing) => (
+              <ListingCard key={listing.id} listing={listing} />
+            ))}
+          </div>
+        )}
+
+        <div className="mt-12 text-center">
+          <Link
+            to="/listings"
+            className="inline-flex items-center gap-2 rounded-md bg-[#0b1f3f] px-7 py-4 text-xs font-bold uppercase tracking-[0.2em] text-white transition hover:bg-[#122c58]"
+          >
+            View All Vacant Listings <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
       </div>
     </section>
@@ -332,12 +427,12 @@ function About() {
       <div className="mx-auto grid max-w-7xl gap-14 px-4 sm:px-6 lg:grid-cols-12 lg:gap-16 lg:px-8">
         <div className="lg:col-span-5">
           <div className="relative overflow-hidden rounded-sm bg-[#0b1f3f] p-10 text-white shadow-xl">
-            <div className="absolute -right-16 -top-16 h-64 w-64 rounded-full bg-amber-500/20 blur-3xl" />
+            <div className="absolute -right-16 -top-16 h-64 w-64 rounded-full bg-brand-500/20 blur-3xl" />
             <div className="relative">
               <div className="inline-flex rounded bg-white px-3 py-2">
                 <Logo className="h-10" />
               </div>
-              <p className="mt-8 text-[11px] font-bold uppercase tracking-[0.28em] text-amber-400">
+              <p className="mt-8 text-[11px] font-bold uppercase tracking-[0.28em] text-brand-400">
                 Director's Note
               </p>
               <blockquote className="mt-4 font-serif-display text-2xl leading-snug text-white">
@@ -353,11 +448,11 @@ function About() {
 
               <div className="mt-10 grid gap-4">
                 <div className="flex items-center gap-3 text-sm text-slate-300">
-                  <Phone className="h-4 w-4 shrink-0 text-amber-400" />
+                  <Phone className="h-4 w-4 shrink-0 text-brand-400" />
                   <span>Support line — reach us any weekday</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm text-slate-300">
-                  <Mail className="h-4 w-4 shrink-0 text-amber-400" />
+                  <Mail className="h-4 w-4 shrink-0 text-brand-400" />
                   <span>hello@rentsync.co.ke</span>
                 </div>
               </div>
@@ -366,11 +461,11 @@ function About() {
         </div>
 
         <div className="lg:col-span-7">
-          <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-amber-600">
+          <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-brand-600">
             About RentSync
           </p>
           <h2 className="mt-4 font-serif-display text-4xl text-slate-900 sm:text-5xl">
-            A quieter way to run your <em className="text-amber-500">rentals</em>
+            A quieter way to run your <em className="text-brand-500">rentals</em>
           </h2>
           <div className="mt-8 space-y-5 text-base leading-relaxed text-slate-600 sm:text-lg">
             <p>
@@ -401,7 +496,7 @@ function About() {
                 key={t}
                 className="flex items-start gap-3 rounded-sm border border-slate-200 bg-white p-4"
               >
-                <CheckCircle2 className="h-5 w-5 shrink-0 text-amber-500" />
+                <CheckCircle2 className="h-5 w-5 shrink-0 text-brand-500" />
                 <span className="text-sm font-medium text-slate-800">{t}</span>
               </div>
             ))}
@@ -417,11 +512,11 @@ function WhyUs() {
     <section id="why-us" className="bg-white py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-amber-600">
+          <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-brand-600">
             Why Choose Us
           </p>
           <h2 className="mt-4 font-serif-display text-4xl text-slate-900 sm:text-5xl lg:text-6xl">
-            Built on <em className="text-amber-500">Trust</em> & Simplicity
+            Built on <em className="text-brand-500">Trust</em> & Simplicity
           </h2>
           <p className="mt-6 text-base leading-relaxed text-slate-600 sm:text-lg">
             Landlords choose RentSync because it respects their time, their money and the way they
@@ -433,9 +528,9 @@ function WhyUs() {
           {whyPoints.map((p) => (
             <div
               key={p.title}
-              className="group rounded-sm border border-slate-200 bg-white p-8 transition hover:border-amber-400 hover:shadow-lg"
+              className="group rounded-sm border border-slate-200 bg-white p-8 transition hover:border-brand-400 hover:shadow-lg"
             >
-              <div className="inline-flex h-12 w-12 items-center justify-center rounded-sm bg-amber-500/10 text-amber-600 transition group-hover:bg-amber-500 group-hover:text-slate-900">
+              <div className="inline-flex h-12 w-12 items-center justify-center rounded-sm bg-brand-500/10 text-brand-600 transition group-hover:bg-brand-500 group-hover:text-white">
                 <p.icon className="h-6 w-6" />
               </div>
               <h3 className="mt-6 font-serif-display text-2xl text-slate-900">{p.title}</h3>
@@ -451,7 +546,7 @@ function WhyUs() {
             { icon: Receipt, k: "Every payment tracked" },
           ].map((x) => (
             <div key={x.k} className="flex items-center gap-4">
-              <x.icon className="h-6 w-6 shrink-0 text-amber-500" />
+              <x.icon className="h-6 w-6 shrink-0 text-brand-500" />
               <span className="text-base font-semibold text-slate-800">{x.k}</span>
             </div>
           ))}
@@ -466,11 +561,11 @@ function Contact() {
     <section id="contact" className="bg-slate-50 py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-amber-600">
+          <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-brand-600">
             Get In Touch
           </p>
           <h2 className="mt-4 font-serif-display text-4xl text-slate-900 sm:text-5xl lg:text-6xl">
-            Let's Sync Your <em className="text-amber-500">Rentals</em>
+            Let's Sync Your <em className="text-brand-500">Rentals</em>
           </h2>
           <p className="mt-6 text-base leading-relaxed text-slate-600 sm:text-lg">
             Ready to move off spreadsheets? Reach out for a walkthrough — we'll help you set up your
@@ -494,7 +589,7 @@ function Contact() {
                 key={c.label}
                 className="flex items-start gap-4 rounded-sm border border-slate-200 bg-white p-6"
               >
-                <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-sm bg-amber-500/10 text-amber-600">
+                <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-sm bg-brand-500/10 text-brand-600">
                   <c.icon className="h-5 w-5" />
                 </div>
                 <div>
@@ -504,7 +599,7 @@ function Contact() {
                   {c.href ? (
                     <a
                       href={c.href}
-                      className="mt-1 block text-base font-semibold text-slate-900 hover:text-amber-600"
+                      className="mt-1 block text-base font-semibold text-slate-900 hover:text-brand-600"
                     >
                       {c.value}
                     </a>
@@ -526,7 +621,7 @@ function Contact() {
 
             <a
               href={LOGIN_URL}
-              className="mt-2 inline-flex w-full items-center justify-center rounded-md bg-amber-500 px-6 py-4 text-xs font-bold uppercase tracking-[0.2em] text-slate-900 transition hover:bg-amber-400"
+              className="mt-2 inline-flex w-full items-center justify-center rounded-md bg-brand-500 px-6 py-4 text-xs font-bold uppercase tracking-[0.2em] text-white transition hover:bg-brand-400"
             >
               Or Sign In Now
             </a>
@@ -552,7 +647,7 @@ function Contact() {
                 <label className="text-[11px] font-bold uppercase tracking-widest text-slate-600">
                   Number of Units
                 </label>
-                <select className="mt-2 w-full rounded-sm border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500/20">
+                <select className="mt-2 w-full rounded-sm border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20">
                   <option>1 – 5 units</option>
                   <option>6 – 20 units</option>
                   <option>21 – 50 units</option>
@@ -567,7 +662,7 @@ function Contact() {
                   rows={5}
                   required
                   placeholder="Where are your properties, how many tenants, and what are you struggling with today?"
-                  className="mt-2 w-full rounded-sm border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500/20"
+                  className="mt-2 w-full rounded-sm border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
                 />
               </div>
             </div>
@@ -611,7 +706,7 @@ function Field({
         type={type}
         placeholder={placeholder}
         required={required}
-        className="mt-2 w-full rounded-sm border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500/20"
+        className="mt-2 w-full rounded-sm border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
       />
     </div>
   );
@@ -622,7 +717,7 @@ function StickyMobileCTA() {
     <div className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 backdrop-blur px-4 py-3 shadow-[0_-4px_12px_rgba(0,0,0,0.06)] md:hidden">
       <a
         href={LOGIN_URL}
-        className="flex w-full items-center justify-center rounded-md bg-amber-500 px-5 py-3.5 text-sm font-bold uppercase tracking-widest text-slate-900 shadow-sm transition hover:bg-amber-400"
+        className="flex w-full items-center justify-center rounded-md bg-brand-500 px-5 py-3.5 text-sm font-bold uppercase tracking-widest text-white shadow-sm transition hover:bg-brand-400"
       >
         Get Started Free
       </a>
@@ -645,7 +740,7 @@ function Footer() {
             </p>
           </div>
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-[0.22em] text-amber-400">
+            <h4 className="text-xs font-bold uppercase tracking-[0.22em] text-brand-400">
               Product
             </h4>
             <ul className="mt-4 space-y-2 text-sm">
@@ -662,7 +757,7 @@ function Footer() {
             </ul>
           </div>
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-[0.22em] text-amber-400">
+            <h4 className="text-xs font-bold uppercase tracking-[0.22em] text-brand-400">
               Company
             </h4>
             <ul className="mt-4 space-y-2 text-sm">
@@ -683,28 +778,28 @@ function Footer() {
           <a
             href="#"
             aria-label="Facebook"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-slate-300 transition hover:border-amber-400 hover:text-amber-400"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-slate-300 transition hover:border-brand-400 hover:text-brand-400"
           >
             <Facebook className="h-4 w-4" />
           </a>
           <a
             href="#"
             aria-label="Instagram"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-slate-300 transition hover:border-amber-400 hover:text-amber-400"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-slate-300 transition hover:border-brand-400 hover:text-brand-400"
           >
             <Instagram className="h-4 w-4" />
           </a>
           <a
             href="#"
             aria-label="X"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-slate-300 transition hover:border-amber-400 hover:text-amber-400"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-slate-300 transition hover:border-brand-400 hover:text-brand-400"
           >
             <Twitter className="h-4 w-4" />
           </a>
           <a
             href="#"
             aria-label="TikTok"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-slate-300 transition hover:border-amber-400 hover:text-amber-400"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-slate-300 transition hover:border-brand-400 hover:text-brand-400"
           >
             <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor">
               <path d="M16.6 5.82s.51.5 0 0A4.278 4.278 0 0 1 15.54 3h-3.09v12.4a2.592 2.592 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6 0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64 0 3.33 2.76 5.7 5.69 5.7 3.14 0 5.69-2.55 5.69-5.7V9.01a7.35 7.35 0 0 0 4.31 1.38V7.3s-1.88.09-3.24-1.48z" />
@@ -713,7 +808,7 @@ function Footer() {
           <a
             href="#"
             aria-label="LinkedIn"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-slate-300 transition hover:border-amber-400 hover:text-amber-400"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-slate-300 transition hover:border-brand-400 hover:text-brand-400"
           >
             <Linkedin className="h-4 w-4" />
           </a>
@@ -735,6 +830,7 @@ function Index() {
       <main>
         <Hero />
         <Services />
+        <FeaturedListings />
         <About />
         <WhyUs />
         <Contact />

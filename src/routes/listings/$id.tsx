@@ -54,7 +54,7 @@ export const Route = createFileRoute("/listings/$id")({
           <p className="mt-2 text-slate-500">
             This listing may have been taken down or never existed.
           </p>
-          <Link to="/listings" className="mt-6 inline-block text-amber-600 hover:underline">
+          <Link to="/listings" className="mt-6 inline-block text-brand-600 hover:underline">
             Browse all listings
           </Link>
         </div>
@@ -117,7 +117,7 @@ function ContactForm({ listing }: { listing: VacantListing }) {
       <Button
         type="submit"
         disabled={status === "sending"}
-        className="w-full bg-amber-500 text-slate-900 hover:bg-amber-400"
+        className="w-full bg-brand-500 text-white hover:bg-brand-600"
       >
         {status === "sending" ? "Sending..." : "Contact about this listing"}
       </Button>
@@ -136,7 +136,7 @@ function ListingDetail() {
       <main className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
         <Link
           to="/listings"
-          className="inline-flex items-center gap-1 text-sm font-medium text-slate-500 hover:text-amber-600"
+          className="inline-flex items-center gap-1 text-sm font-medium text-slate-500 hover:text-brand-600"
         >
           <ArrowLeft className="h-4 w-4" /> Back to all listings
         </Link>
@@ -167,7 +167,7 @@ function ListingDetail() {
 
             <div className="mt-6">
               {listing.unit_type && (
-                <span className="w-fit rounded-full bg-amber-100 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide text-amber-700">
+                <span className="w-fit rounded-full bg-brand-100 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide text-brand-700">
                   {listing.unit_type}
                 </span>
               )}

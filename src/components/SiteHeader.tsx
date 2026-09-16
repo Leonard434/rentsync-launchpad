@@ -13,7 +13,7 @@ export default function SiteHeader() {
             className="h-10 sm:h-11"
           />
           <div className="hidden flex-col leading-tight sm:flex">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-600">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-600">
               Smart Property Management
             </span>
           </div>
@@ -21,20 +21,20 @@ export default function SiteHeader() {
         <nav className="hidden items-center gap-8 md:flex">
           <Link
             to="/"
-            className="text-sm font-semibold uppercase tracking-wider text-slate-700 transition hover:text-amber-600"
+            className="text-sm font-semibold uppercase tracking-wider text-slate-700 transition hover:text-brand-600"
           >
             Home
           </Link>
           <Link
             to="/listings"
-            className="text-sm font-semibold uppercase tracking-wider text-slate-700 transition hover:text-amber-600"
+            className="text-sm font-semibold uppercase tracking-wider text-slate-700 transition hover:text-brand-600"
           >
             Vacant Listings
           </Link>
         </nav>
         <a
           href={LOGIN_URL}
-          className="inline-flex items-center justify-center rounded-md bg-amber-500 px-5 py-3 text-xs font-bold uppercase tracking-widest text-slate-900 shadow-sm transition hover:bg-amber-400"
+          className="inline-flex items-center justify-center rounded-md bg-brand-500 px-5 py-3 text-xs font-bold uppercase tracking-widest text-white shadow-sm transition hover:bg-brand-400"
         >
           Get Started
         </a>

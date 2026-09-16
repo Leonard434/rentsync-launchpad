@@ -51,7 +51,7 @@ function ListingCard({ listing }: { listing: VacantListing }) {
       </div>
       <div className="flex flex-1 flex-col gap-1 p-4">
         {listing.unit_type && (
-          <span className="w-fit rounded-full bg-amber-100 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide text-amber-700">
+          <span className="w-fit rounded-full bg-brand-100 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide text-brand-700">
             {listing.unit_type}
           </span>
         )}

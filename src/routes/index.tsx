@@ -219,10 +219,10 @@ function Nav() {
 
 function Hero() {
   const stats = [
-    { v: "9+", l: "Properties" },
-    { v: "35+", l: "Tenants" },
+    { v: "M-Pesa", l: "Native Payments" },
     { v: "100%", l: "Visibility" },
-    { v: "24/7", l: "Access" },
+    { v: "Auto", l: "Bills & Receipts" },
+    { v: "24/7", l: "Access Anywhere" },
   ];
   return (
     <section id="top" className="relative overflow-hidden bg-[#0b1f3f] text-white">
@@ -249,9 +249,10 @@ function Hero() {
             RentSync — Smart Property Management
           </p>
           <p className="mt-6 max-w-xl text-base leading-relaxed text-slate-300 sm:text-lg">
-            RentSync gives Kenyan landlords one calm, reliable place to run their rentals — track
-            rent, manage tenants, log maintenance and see the health of every property in real time,
-            from your phone or laptop.
+            Stop chasing rent on WhatsApp and paper books. RentSync gives Kenyan landlords one
+            calm, reliable place to run their rentals — track rent, manage tenants, log
+            maintenance and see the health of every property in real time, from your phone or
+            laptop.
           </p>
           <div className="mt-10 flex flex-col gap-3 sm:flex-row">
             <a

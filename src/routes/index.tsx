@@ -41,50 +41,42 @@ const services = [
   {
     icon: Building2,
     title: "Property & Unit Management",
-    body:
-      "Organise every building, block and unit in one place. Track occupancy, unit types, rent amounts, deposits and access codes without ever touching a spreadsheet again.",
+    body: "Organise every building, block and unit in one place. Track occupancy, unit types, rent amounts, deposits and access codes without ever touching a spreadsheet again.",
   },
   {
     icon: Users,
     title: "Tenant Management",
-    body:
-      "Onboard tenants with digital lease details, ID records and emergency contacts. Handle move-ins, transfers and move-outs with clear timelines and status updates.",
+    body: "Onboard tenants with digital lease details, ID records and emergency contacts. Handle move-ins, transfers and move-outs with clear timelines and status updates.",
   },
   {
     icon: Receipt,
     title: "Smart Billing & Invoicing",
-    body:
-      "Rent, water, service charge and one-off bills are generated automatically each month. Support for partial payments, advances, arrears and custom line items — always accurate.",
+    body: "Rent, water, service charge and one-off bills are generated automatically each month. Support for partial payments, advances, arrears and custom line items — always accurate.",
   },
   {
     icon: Smartphone,
     title: "M-Pesa & Bank Payments",
-    body:
-      "Record M-Pesa till, paybill and bank transfer payments in seconds. Every shilling is matched to the right tenant, the right unit and the right invoice — with a full audit trail.",
+    body: "Record M-Pesa till, paybill and bank transfer payments in seconds. Every shilling is matched to the right tenant, the right unit and the right invoice — with a full audit trail.",
   },
   {
     icon: Wrench,
     title: "Maintenance & Repairs",
-    body:
-      "Tenants report issues in-app. You assign technicians, track status from open to resolved and log actual costs against each property to keep repairs profitable.",
+    body: "Tenants report issues in-app. You assign technicians, track status from open to resolved and log actual costs against each property to keep repairs profitable.",
   },
   {
     icon: LayoutDashboard,
     title: "Real-Time Landlord Dashboard",
-    body:
-      "One live view of collections, occupancy, arrears and pending actions across your entire portfolio — refreshed instantly whether you're on your phone, tablet or laptop.",
+    body: "One live view of collections, occupancy, arrears and pending actions across your entire portfolio — refreshed instantly whether you're on your phone, tablet or laptop.",
   },
   {
     icon: Bell,
     title: "Tenant Portal & Notifications",
-    body:
-      "Tenants get their own secure login to see bills, download receipts, pay online and receive automated rent reminders and maintenance updates — reducing calls to you.",
+    body: "Tenants get their own secure login to see bills, download receipts, pay online and receive automated rent reminders and maintenance updates — reducing calls to you.",
   },
   {
     icon: BarChart3,
     title: "Reports, Insights & Statements",
-    body:
-      "Month-over-month reports on collections, arrears, occupancy and maintenance spend. Export clean tenant statements and landlord summaries in a single click.",
+    body: "Month-over-month reports on collections, arrears, occupancy and maintenance spend. Export clean tenant statements and landlord summaries in a single click.",
   },
 ];
 
@@ -92,43 +84,43 @@ const whyPoints = [
   {
     icon: MapPin,
     title: "Built for Kenyan Landlords",
-    body:
-      "Designed around the way rent is actually collected here — M-Pesa first, mobile first, real workflows for real properties in Nairobi and beyond.",
+    body: "Designed around the way rent is actually collected here — M-Pesa first, mobile first, real workflows for real properties in Nairobi and beyond.",
   },
   {
     icon: Clock,
     title: "Save Hours Every Month",
-    body:
-      "Auto-generated bills, digital receipts and instant reminders replace WhatsApp chases, paper books and endless spreadsheets.",
+    body: "Auto-generated bills, digital receipts and instant reminders replace WhatsApp chases, paper books and endless spreadsheets.",
   },
   {
     icon: Lock,
     title: "Secure & Reliable",
-    body:
-      "Your tenant data, payments and records are protected with modern security and daily backups — accessible only to you.",
+    body: "Your tenant data, payments and records are protected with modern security and daily backups — accessible only to you.",
   },
   {
     icon: HeartHandshake,
     title: "Fair, Transparent Pricing",
-    body:
-      "Start free and scale as your portfolio grows. No setup fees, no hidden charges, no long contracts — ever.",
+    body: "Start free and scale as your portfolio grows. No setup fees, no hidden charges, no long contracts — ever.",
   },
   {
     icon: Sparkles,
     title: "Simple Enough for Anyone",
-    body:
-      "A clean, friendly interface that any landlord — or caretaker — can pick up in minutes. No training required.",
+    body: "A clean, friendly interface that any landlord — or caretaker — can pick up in minutes. No training required.",
   },
   {
     icon: Target,
     title: "End-to-End Rental Ops",
-    body:
-      "From listing a unit to closing the books at month-end, RentSync covers every step of running your rental business.",
+    body: "From listing a unit to closing the books at month-end, RentSync covers every step of running your rental business.",
   },
 ];
 
 function Logo({ className = "h-10" }: { className?: string }) {
-  return <img src="/rentsync-logo.png" alt="RentSync — Smart Property Management" className={className} />;
+  return (
+    <img
+      src="/rentsync-logo.png"
+      alt="RentSync — Smart Property Management"
+      className={className}
+    />
+  );
 }
 
 function Nav() {
@@ -224,10 +216,7 @@ function Hero() {
     { v: "24/7", l: "Access" },
   ];
   return (
-    <section
-      id="top"
-      className="relative overflow-hidden bg-[#0b1f3f] text-white"
-    >
+    <section id="top" className="relative overflow-hidden bg-[#0b1f3f] text-white">
       <div className="absolute inset-0 opacity-[0.07]" aria-hidden>
         <div
           className="absolute inset-0"
@@ -252,8 +241,8 @@ function Hero() {
           </p>
           <p className="mt-6 max-w-xl text-base leading-relaxed text-slate-300 sm:text-lg">
             RentSync gives Kenyan landlords one calm, reliable place to run their rentals — track
-            rent, manage tenants, log maintenance and see the health of every property in real
-            time, from your phone or laptop.
+            rent, manage tenants, log maintenance and see the health of every property in real time,
+            from your phone or laptop.
           </p>
           <div className="mt-10 flex flex-col gap-3 sm:flex-row">
             <a
@@ -304,8 +293,8 @@ function Services() {
             Our <em className="text-amber-500">Services</em>
           </h2>
           <p className="mt-6 text-base leading-relaxed text-slate-600 sm:text-lg">
-            From onboarding your first tenant to closing the books at month-end, RentSync delivers
-            a complete rental management toolkit — built specifically for the realities of managing
+            From onboarding your first tenant to closing the books at month-end, RentSync delivers a
+            complete rental management toolkit — built specifically for the realities of managing
             property in Kenya.
           </p>
         </div>
@@ -484,8 +473,8 @@ function Contact() {
             Let's Sync Your <em className="text-amber-500">Rentals</em>
           </h2>
           <p className="mt-6 text-base leading-relaxed text-slate-600 sm:text-lg">
-            Ready to move off spreadsheets? Reach out for a walkthrough — we'll help you set up
-            your first properties and tenants in minutes.
+            Ready to move off spreadsheets? Reach out for a walkthrough — we'll help you set up your
+            first properties and tenants in minutes.
           </p>
         </div>
 
@@ -493,7 +482,12 @@ function Contact() {
           <div className="space-y-4 lg:col-span-4">
             {[
               { icon: Phone, label: "Phone", value: PHONE_DISPLAY, href: PHONE_TEL },
-              { icon: Mail, label: "Email", value: "hello@rentsync.co.ke", href: "mailto:hello@rentsync.co.ke" },
+              {
+                icon: Mail,
+                label: "Email",
+                value: "hello@rentsync.co.ke",
+                href: "mailto:hello@rentsync.co.ke",
+              },
               { icon: MapPin, label: "Location", value: "Nairobi, Kenya", href: null },
             ].map((c) => (
               <div
@@ -508,7 +502,10 @@ function Contact() {
                     {c.label}
                   </p>
                   {c.href ? (
-                    <a href={c.href} className="mt-1 block text-base font-semibold text-slate-900 hover:text-amber-600">
+                    <a
+                      href={c.href}
+                      className="mt-1 block text-base font-semibold text-slate-900 hover:text-amber-600"
+                    >
                       {c.value}
                     </a>
                   ) : (
@@ -543,7 +540,13 @@ function Contact() {
               <Field label="Full Name *" name="name" placeholder="Jane Wanjiku" required />
               <Field label="Phone" name="phone" placeholder="0712 345 678" type="tel" />
               <div className="sm:col-span-2">
-                <Field label="Email *" name="email" placeholder="you@example.com" type="email" required />
+                <Field
+                  label="Email *"
+                  name="email"
+                  placeholder="you@example.com"
+                  type="email"
+                  required
+                />
               </div>
               <div className="sm:col-span-2">
                 <label className="text-[11px] font-bold uppercase tracking-widest text-slate-600">
@@ -596,7 +599,10 @@ function Field({
 }) {
   return (
     <div>
-      <label htmlFor={name} className="text-[11px] font-bold uppercase tracking-widest text-slate-600">
+      <label
+        htmlFor={name}
+        className="text-[11px] font-bold uppercase tracking-widest text-slate-600"
+      >
         {label}
       </label>
       <input
@@ -639,34 +645,76 @@ function Footer() {
             </p>
           </div>
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-[0.22em] text-amber-400">Product</h4>
+            <h4 className="text-xs font-bold uppercase tracking-[0.22em] text-amber-400">
+              Product
+            </h4>
             <ul className="mt-4 space-y-2 text-sm">
-              <li><a href="#services" className="hover:text-white">Services</a></li>
-              <li><a href="#why-us" className="hover:text-white">Why Us</a></li>
+              <li>
+                <a href="#services" className="hover:text-white">
+                  Services
+                </a>
+              </li>
+              <li>
+                <a href="#why-us" className="hover:text-white">
+                  Why Us
+                </a>
+              </li>
             </ul>
           </div>
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-[0.22em] text-amber-400">Company</h4>
+            <h4 className="text-xs font-bold uppercase tracking-[0.22em] text-amber-400">
+              Company
+            </h4>
             <ul className="mt-4 space-y-2 text-sm">
-              <li><a href="#about" className="hover:text-white">About</a></li>
-              <li><a href="#contact" className="hover:text-white">Contact</a></li>
+              <li>
+                <a href="#about" className="hover:text-white">
+                  About
+                </a>
+              </li>
+              <li>
+                <a href="#contact" className="hover:text-white">
+                  Contact
+                </a>
+              </li>
             </ul>
           </div>
         </div>
         <div className="mt-10 flex items-center justify-center gap-4 border-t border-white/10 pt-8 sm:justify-start">
-          <a href="#" aria-label="Facebook" className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-slate-300 transition hover:border-amber-400 hover:text-amber-400">
+          <a
+            href="#"
+            aria-label="Facebook"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-slate-300 transition hover:border-amber-400 hover:text-amber-400"
+          >
             <Facebook className="h-4 w-4" />
           </a>
-          <a href="#" aria-label="Instagram" className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-slate-300 transition hover:border-amber-400 hover:text-amber-400">
+          <a
+            href="#"
+            aria-label="Instagram"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-slate-300 transition hover:border-amber-400 hover:text-amber-400"
+          >
             <Instagram className="h-4 w-4" />
           </a>
-          <a href="#" aria-label="X" className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-slate-300 transition hover:border-amber-400 hover:text-amber-400">
+          <a
+            href="#"
+            aria-label="X"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-slate-300 transition hover:border-amber-400 hover:text-amber-400"
+          >
             <Twitter className="h-4 w-4" />
           </a>
-          <a href="#" aria-label="TikTok" className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-slate-300 transition hover:border-amber-400 hover:text-amber-400">
-            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor"><path d="M16.6 5.82s.51.5 0 0A4.278 4.278 0 0 1 15.54 3h-3.09v12.4a2.592 2.592 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6 0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64 0 3.33 2.76 5.7 5.69 5.7 3.14 0 5.69-2.55 5.69-5.7V9.01a7.35 7.35 0 0 0 4.31 1.38V7.3s-1.88.09-3.24-1.48z"/></svg>
+          <a
+            href="#"
+            aria-label="TikTok"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-slate-300 transition hover:border-amber-400 hover:text-amber-400"
+          >
+            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor">
+              <path d="M16.6 5.82s.51.5 0 0A4.278 4.278 0 0 1 15.54 3h-3.09v12.4a2.592 2.592 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6 0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64 0 3.33 2.76 5.7 5.69 5.7 3.14 0 5.69-2.55 5.69-5.7V9.01a7.35 7.35 0 0 0 4.31 1.38V7.3s-1.88.09-3.24-1.48z" />
+            </svg>
           </a>
-          <a href="#" aria-label="LinkedIn" className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-slate-300 transition hover:border-amber-400 hover:text-amber-400">
+          <a
+            href="#"
+            aria-label="LinkedIn"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-slate-300 transition hover:border-amber-400 hover:text-amber-400"
+          >
             <Linkedin className="h-4 w-4" />
           </a>
         </div>

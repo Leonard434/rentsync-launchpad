@@ -60,7 +60,8 @@ function ListingCard({ listing }: { listing: VacantListing }) {
           <MapPin className="h-3.5 w-3.5 shrink-0" /> {listing.property_location}
         </p>
         <p className="mt-2 text-lg font-bold text-[#0b1f3f]">
-          {formatKes(listing.rent)}<span className="text-sm font-medium text-slate-500">/month</span>
+          {formatKes(listing.rent)}
+          <span className="text-sm font-medium text-slate-500">/month</span>
         </p>
       </div>
     </Link>
@@ -88,8 +89,12 @@ function ListingsIndex() {
         {listings.length === 0 ? (
           <div className="py-24 text-center">
             <HomeIcon className="mx-auto h-12 w-12 text-slate-300" />
-            <h2 className="mt-4 text-lg font-semibold text-slate-700">No vacant units listed right now</h2>
-            <p className="mt-1 text-sm text-slate-500">Check back soon — new listings are added regularly.</p>
+            <h2 className="mt-4 text-lg font-semibold text-slate-700">
+              No vacant units listed right now
+            </h2>
+            <p className="mt-1 text-sm text-slate-500">
+              Check back soon — new listings are added regularly.
+            </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">

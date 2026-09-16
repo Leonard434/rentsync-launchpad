@@ -39,12 +39,14 @@ async function callRpc<T>(fn: string, args: Record<string, unknown>): Promise<T>
   return response.json();
 }
 
-export function listVacantListings(params: {
-  location?: string;
-  unitType?: string;
-  limit?: number;
-  offset?: number;
-} = {}): Promise<VacantListing[]> {
+export function listVacantListings(
+  params: {
+    location?: string;
+    unitType?: string;
+    limit?: number;
+    offset?: number;
+  } = {},
+): Promise<VacantListing[]> {
   return callRpc("public_list_vacant_listings", {
     p_location: params.location ?? null,
     p_unit_type: params.unitType ?? null,
@@ -73,5 +75,9 @@ export function contactVacantListingLead(params: {
 }
 
 export function formatKes(amount: number): string {
-  return new Intl.NumberFormat("en-KE", { style: "currency", currency: "KES", maximumFractionDigits: 0 }).format(amount);
+  return new Intl.NumberFormat("en-KE", {
+    style: "currency",
+    currency: "KES",
+    maximumFractionDigits: 0,
+  }).format(amount);
 }

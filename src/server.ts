@@ -3,6 +3,7 @@ import "./lib/error-capture";
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
 import { buildSitemapXml } from "./lib/sitemap";
+import { handleAssistantChat } from "./lib/assistantServer";
 
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
@@ -48,6 +49,15 @@ function isH3SwallowedErrorBody(body: string): boolean {
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     const url = new URL(request.url);
+    if (url.pathname === "/api/assistant/chat" && request.method === "POST") {
+      try {
+        return await handleAssistantChat(request);
+      } catch (error) {
+        console.error("Assistant chat handler failed", error);
+        return Response.json({ error: "Assistant request failed" }, { status: 500 });
+      }
+    }
+
     if (url.pathname === "/sitemap.xml") {
       try {
         const xml = await buildSitemapXml();
@@ -60,10 +70,13 @@ export default {
         });
       } catch (error) {
         console.error("Failed to build sitemap.xml", error);
-        return new Response("<?xml version=\"1.0\" encoding=\"UTF-8\"?><urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"></urlset>", {
-          status: 200,
-          headers: { "content-type": "application/xml; charset=utf-8" },
-        });
+        return new Response(
+          '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>',
+          {
+            status: 200,
+            headers: { "content-type": "application/xml; charset=utf-8" },
+          },
+        );
       }
     }
 

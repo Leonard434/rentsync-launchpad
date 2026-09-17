@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/select";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { listVacantListings, formatKes, displayPhotos, type VacantListing } from "@/lib/vacantListings";
+import { breadcrumbLd, canonicalLink, itemListLd, slugify } from "@/lib/seo";
 
 const searchSchema = z.object({
   q: z.string().optional().catch(undefined),
@@ -32,9 +33,9 @@ export const Route = createFileRoute("/listings/")({
     const listings = await listVacantListings({ limit: 50 });
     return { listings };
   },
-  head: () => ({
+  head: ({ loaderData }) => ({
     meta: [
-      { title: "Vacant Houses for Rent in Kenya — RentSync Listings" },
+      { title: "Vacant Houses for Rent in Kenya — Bedsitters, Single Rooms & Apartments | RentSync" },
       {
         name: "description",
         content:
@@ -46,7 +47,13 @@ export const Route = createFileRoute("/listings/")({
         content: "Search vacant units listed by verified, active RentSync landlords across Kenya.",
       },
       { property: "og:type", content: "website" },
+      ...(loaderData?.listings.length ? [itemListLd(loaderData.listings)] : []),
+      breadcrumbLd([
+        { name: "Home", path: "/" },
+        { name: "Vacant Listings", path: "/listings" },
+      ]),
     ],
+    links: [canonicalLink("/listings")],
   }),
   component: ListingsIndex,
 });
@@ -367,6 +374,41 @@ function ListingsIndex() {
       </section>
 
       <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+        {!hasActiveSearch && (locations.length > 0 || unitTypes.length > 0) && (
+          <div className="mb-10 flex flex-wrap gap-x-8 gap-y-3 border-b border-slate-200 pb-8 text-sm">
+            {locations.length > 0 && (
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="font-semibold text-slate-500">Browse by area:</span>
+                {locations.slice(0, 12).map((l) => (
+                  <Link
+                    key={l}
+                    to="/listings/in/$location"
+                    params={{ location: slugify(l) }}
+                    className="rounded-full border border-slate-200 px-3 py-1 text-slate-600 transition hover:border-brand-400 hover:text-brand-700"
+                  >
+                    {l}
+                  </Link>
+                ))}
+              </div>
+            )}
+            {unitTypes.length > 0 && (
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="font-semibold text-slate-500">Browse by type:</span>
+                {unitTypes.map((t) => (
+                  <Link
+                    key={t}
+                    to="/listings/type/$unitType"
+                    params={{ unitType: slugify(t) }}
+                    className="rounded-full border border-slate-200 px-3 py-1 text-slate-600 transition hover:border-brand-400 hover:text-brand-700"
+                  >
+                    {t}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
         {hasActiveSearch && (
           <div className="mb-6 flex flex-wrap items-center gap-2">
             <span className="text-sm font-medium text-slate-500">

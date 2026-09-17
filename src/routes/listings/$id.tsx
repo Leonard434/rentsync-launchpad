@@ -21,6 +21,7 @@ import {
   whatsappLink,
   type VacantListing,
 } from "@/lib/vacantListings";
+import { absoluteUrl, apartmentLd, breadcrumbLd, canonicalLink } from "@/lib/seo";
 
 export const Route = createFileRoute("/listings/$id")({
   loader: async ({ params }) => {
@@ -30,28 +31,35 @@ export const Route = createFileRoute("/listings/$id")({
     if (!listing) throw notFound();
     return { listing };
   },
-  head: ({ loaderData }) => {
+  head: ({ loaderData, params }) => {
     const listing = loaderData?.listing;
     if (!listing) return { meta: [{ title: "Listing not found — RentSync" }] };
+    const location = listing.detailed_location || listing.property_location;
+    const unit = listing.unit_type ?? "Unit";
+    const title = `${unit} for Rent in ${location} — ${formatKes(listing.rent)}/mo | RentSync`;
+    const description =
+      listing.description ||
+      `${unit} for rent in ${location}, Kenya at ${formatKes(listing.rent)}/month.${
+        listing.units_available > 1 ? ` ${listing.units_available} identical units available.` : ""
+      } Listed by a verified RentSync landlord — never pay before viewing.`;
     return {
       meta: [
-        { title: `${listing.title} — ${formatKes(listing.rent)}/mo — RentSync` },
-        {
-          name: "description",
-          content:
-            listing.description ||
-            `${listing.unit_type ?? "Unit"} for rent in ${listing.property_location}.`,
-        },
+        { title },
+        { name: "description", content: description },
         { property: "og:title", content: listing.title },
-        {
-          property: "og:description",
-          content:
-            listing.description ||
-            `${listing.unit_type ?? "Unit"} for rent in ${listing.property_location}.`,
-        },
+        { property: "og:description", content: description },
         { property: "og:type", content: "product" },
+        { property: "og:url", content: absoluteUrl(`/listings/${params.id}`) },
+        { name: "twitter:card", content: listing.photos?.[0] ? "summary_large_image" : "summary" },
         ...(listing.photos?.[0] ? [{ property: "og:image", content: listing.photos[0] }] : []),
+        apartmentLd(listing),
+        breadcrumbLd([
+          { name: "Home", path: "/" },
+          { name: "Vacant Listings", path: "/listings" },
+          { name: listing.title, path: `/listings/${params.id}` },
+        ]),
       ],
+      links: [canonicalLink(`/listings/${params.id}`)],
     };
   },
   component: ListingDetail,

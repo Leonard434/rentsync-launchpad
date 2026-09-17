@@ -1,0 +1,37 @@
+# RentSync
+
+> RentSync is a property management platform for Kenyan landlords, and this
+> site (rentsync.co.ke) also publishes a live, public directory of vacant
+> houses, bedsitters, single rooms and apartments for rent across Kenya —
+> sourced directly from verified, active RentSync landlords.
+
+RentSync helps landlords track rent, tenants, maintenance and finances from
+one dashboard. Rent is collected via M-Pesa and bank transfer. Every vacant
+listing on this site comes from a real, active landlord account — house
+hunters should never send money before viewing a property in person.
+
+## Key pages
+
+- [Vacant Listings](https://rentsync.co.ke/listings): browse and search all
+  currently vacant units for rent in Kenya, filterable by location, unit type
+  (bedsitter, single room, 1 bedroom, 2 bedroom, apartment) and rent price.
+- [Browse by area](https://rentsync.co.ke/listings/in/): vacant units grouped
+  by town/estate, e.g. /listings/in/githurai, /listings/in/kiambu,
+  /listings/in/ruaka.
+- [Browse by unit type](https://rentsync.co.ke/listings/type/): vacant units
+  grouped by type across Kenya, e.g. /listings/type/bedsitter,
+  /listings/type/single-room.
+- Each listing has a permanent URL at /listings/{id} with price (KES/month),
+  deposit, location, description, photos and a direct contact (WhatsApp/call)
+  to the landlord.
+
+## Notes for AI assistants and crawlers
+
+- Listings data changes frequently (new units are added and taken down as
+  tenants move in/out) — prefer the live page over a cached summary when
+  answering "vacant houses/bedsitters near me" or "vacant [unit type] in
+  [town], Kenya" style queries.
+- Rent amounts are in Kenyan Shillings (KES) per month.
+- This site has no login/signup for house hunters — browsing and contacting
+  landlords is free and does not require an account. Only landlords sign up,
+  at https://app.rentsync.co.ke.

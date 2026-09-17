@@ -1,0 +1,40 @@
+User-agent: *
+Allow: /
+
+# AI crawlers / answer engines — explicitly allowed so RentSync's public
+# vacant-listings pages can be cited in AI search (ChatGPT, Perplexity,
+# Claude, Google AI Overviews, etc.), not just traditional web search.
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+Sitemap: https://rentsync.co.ke/sitemap.xml

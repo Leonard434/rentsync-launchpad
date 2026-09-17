@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { listVacantListings, formatKes, displayPhotos, type VacantListing } from "@/lib/vacantListings";
 import UnitTypeIcon from "@/components/UnitTypeIcon";
+import { canonicalLink, organizationLd } from "@/lib/seo";
 import {
   Users,
   Receipt,
@@ -37,6 +38,22 @@ export const Route = createFileRoute("/")({
     const featuredListings = await listVacantListings({ limit: 3 });
     return { featuredListings };
   },
+  head: () => ({
+    meta: [
+      {
+        title:
+          "RentSync — Smart Property Management & Vacant House Listings for Kenyan Landlords",
+      },
+      {
+        name: "description",
+        content:
+          "RentSync helps Kenyan landlords track rent, tenants, maintenance and finances — and browse vacant bedsitters, single rooms and apartments for rent across Kenya.",
+      },
+      { property: "og:url", content: "https://rentsync.co.ke/" },
+      organizationLd(),
+    ],
+    links: [canonicalLink("/")],
+  }),
   component: Index,
 });
 

@@ -4,7 +4,12 @@ import { MapPin, Home as HomeIcon } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import UnitTypeIcon from "@/components/UnitTypeIcon";
 import { Badge } from "@/components/ui/badge";
-import { listVacantListings, formatKes, displayPhotos, type VacantListing } from "@/lib/vacantListings";
+import {
+  listVacantListings,
+  formatKes,
+  displayPhotos,
+  type VacantListing,
+} from "@/lib/vacantListings";
 import { breadcrumbLd, canonicalLink, itemListLd, slugify, unslugify } from "@/lib/seo";
 
 export const Route = createFileRoute("/listings/in/$location")({
@@ -16,10 +21,10 @@ export const Route = createFileRoute("/listings/in/$location")({
   head: ({ loaderData, params }) => {
     const location = loaderData?.location ?? unslugify(params.location);
     const count = loaderData?.listings.length ?? 0;
-    const title = `Vacant Houses for Rent in ${location}, Kenya — Bedsitters & Apartments | RentSync`;
+    const title = `Vacant Houses for Rent in ${location}, Kenya: Bedsitters & Apartments | RentSync`;
     const description = `${
       count > 0 ? `${count} vacant unit${count === 1 ? "" : "s"}` : "Browse vacant houses"
-    } for rent in ${location} — bedsitters, single rooms and apartments listed by verified RentSync landlords. Never pay before viewing.`;
+    } for rent in ${location}, including bedsitters, single rooms and apartments listed by verified RentSync landlords. Never pay before viewing.`;
     return {
       meta: [
         { title },
@@ -99,9 +104,13 @@ function LocationListings() {
       <section className="border-b border-slate-200 bg-[#0b1f3f] text-white">
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
           <nav className="mb-3 text-xs text-slate-400">
-            <Link to="/" className="hover:text-white">Home</Link>
+            <Link to="/" className="hover:text-white">
+              Home
+            </Link>
             {" / "}
-            <Link to="/listings" className="hover:text-white">Vacant Listings</Link>
+            <Link to="/listings" className="hover:text-white">
+              Vacant Listings
+            </Link>
             {" / "}
             <span className="text-slate-300">{location}</span>
           </nav>
@@ -111,8 +120,8 @@ function LocationListings() {
           <p className="mt-4 max-w-2xl text-slate-300">
             {listings.length > 0
               ? `${listings.length} vacant unit${listings.length === 1 ? "" : "s"} in ${location} from verified, active RentSync landlords.`
-              : `No vacant units in ${location} right now — check back soon, or browse all listings across Kenya.`}
-            {" "}Never send money before viewing the property in person.
+              : `No vacant units in ${location} right now. Check back soon, or browse all listings across Kenya.`}{" "}
+            Never send money before viewing the property in person.
           </p>
           {unitTypes.length > 0 && (
             <div className="mt-6 flex flex-wrap gap-2">

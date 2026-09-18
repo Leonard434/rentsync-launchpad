@@ -33,15 +33,15 @@ export const Route = createFileRoute("/listings/$id")({
   },
   head: ({ loaderData, params }) => {
     const listing = loaderData?.listing;
-    if (!listing) return { meta: [{ title: "Listing not found — RentSync" }] };
+    if (!listing) return { meta: [{ title: "Listing not found | RentSync" }] };
     const location = listing.detailed_location || listing.property_location;
     const unit = listing.unit_type ?? "Unit";
-    const title = `${unit} for Rent in ${location} — ${formatKes(listing.rent)}/mo | RentSync`;
+    const title = `${unit} for Rent in ${location}, ${formatKes(listing.rent)}/mo | RentSync`;
     const description =
       listing.description ||
       `${unit} for rent in ${location}, Kenya at ${formatKes(listing.rent)}/month.${
         listing.units_available > 1 ? ` ${listing.units_available} identical units available.` : ""
-      } Listed by a verified RentSync landlord — never pay before viewing.`;
+      } Listed by a verified RentSync landlord. Never pay before viewing.`;
     return {
       meta: [
         { title },
@@ -170,7 +170,7 @@ function ListingDetail() {
                       <div className="aspect-[4/3] w-full overflow-hidden rounded-xl bg-slate-100">
                         <img
                           src={url}
-                          alt={`${listing.title} — photo ${i + 1} of ${photos.length}`}
+                          alt={`${listing.title}, photo ${i + 1} of ${photos.length}`}
                           className="h-full w-full object-cover"
                         />
                       </div>

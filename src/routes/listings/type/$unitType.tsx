@@ -4,7 +4,12 @@ import { MapPin, Home as HomeIcon } from "lucide-react";
 import SiteHeader from "@/components/SiteHeader";
 import UnitTypeIcon from "@/components/UnitTypeIcon";
 import { Badge } from "@/components/ui/badge";
-import { listVacantListings, formatKes, displayPhotos, type VacantListing } from "@/lib/vacantListings";
+import {
+  listVacantListings,
+  formatKes,
+  displayPhotos,
+  type VacantListing,
+} from "@/lib/vacantListings";
 import { breadcrumbLd, canonicalLink, itemListLd, slugify, unslugify } from "@/lib/seo";
 
 export const Route = createFileRoute("/listings/type/$unitType")({
@@ -16,9 +21,11 @@ export const Route = createFileRoute("/listings/type/$unitType")({
   head: ({ loaderData, params }) => {
     const unitType = loaderData?.unitType ?? unslugify(params.unitType);
     const count = loaderData?.listings.length ?? 0;
-    const title = `Vacant ${unitType}s for Rent in Kenya — RentSync Listings`;
+    const title = `Vacant ${unitType}s for Rent in Kenya | RentSync Listings`;
     const description = `${
-      count > 0 ? `${count} vacant ${unitType.toLowerCase()}${count === 1 ? "" : "s"}` : `Browse vacant ${unitType.toLowerCase()}s`
+      count > 0
+        ? `${count} vacant ${unitType.toLowerCase()}${count === 1 ? "" : "s"}`
+        : `Browse vacant ${unitType.toLowerCase()}s`
     } for rent across Kenya, listed by verified RentSync landlords. Never pay before viewing.`;
     return {
       meta: [
@@ -102,9 +109,13 @@ function UnitTypeListings() {
       <section className="border-b border-slate-200 bg-[#0b1f3f] text-white">
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
           <nav className="mb-3 text-xs text-slate-400">
-            <Link to="/" className="hover:text-white">Home</Link>
+            <Link to="/" className="hover:text-white">
+              Home
+            </Link>
             {" / "}
-            <Link to="/listings" className="hover:text-white">Vacant Listings</Link>
+            <Link to="/listings" className="hover:text-white">
+              Vacant Listings
+            </Link>
             {" / "}
             <span className="text-slate-300">{unitType}s</span>
           </nav>
@@ -114,8 +125,8 @@ function UnitTypeListings() {
           <p className="mt-4 max-w-2xl text-slate-300">
             {listings.length > 0
               ? `${listings.length} vacant ${unitType.toLowerCase()}${listings.length === 1 ? "" : "s"} from verified, active RentSync landlords across Kenya.`
-              : `No vacant ${unitType.toLowerCase()}s right now — check back soon, or browse all listings.`}
-            {" "}Never send money before viewing the property in person.
+              : `No vacant ${unitType.toLowerCase()}s right now. Check back soon, or browse all listings.`}{" "}
+            Never send money before viewing the property in person.
           </p>
           {locations.length > 0 && (
             <div className="mt-6 flex flex-wrap gap-2">

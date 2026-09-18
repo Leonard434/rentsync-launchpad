@@ -42,6 +42,7 @@ export function canonicalLink(path: string) {
 // it as a `<script type="application/ld+json">` tag (see
 // node_modules/@tanstack/react-router/dist/esm/headContentUtils.js) — so this
 // is deliberately typed as `any` to bridge that gap, not a type-safety hole.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- see comment above
 export function ldJson(data: Record<string, unknown>): any {
   return { "script:ld+json": data };
 }
@@ -54,7 +55,7 @@ export function organizationLd() {
     url: SITE_URL,
     logo: absoluteUrl("/rentsync-logo.png"),
     description:
-      "RentSync helps Kenyan landlords manage properties, tenants and rent collection — and publishes verified vacant houses, bedsitters and apartments for rent across Kenya.",
+      "RentSync helps Kenyan landlords manage properties, tenants and rent collection, and publishes verified vacant houses, bedsitters and apartments for rent across Kenya.",
     areaServed: { "@type": "Country", name: "Kenya" },
     contactPoint: {
       "@type": "ContactPoint",

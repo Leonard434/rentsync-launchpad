@@ -78,14 +78,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "RentSync — Smart Property Management for Kenyan Landlords" },
+      { title: "RentSync | Smart Property Management for Kenyan Landlords" },
       {
         name: "description",
         content:
-          "RentSync helps Kenyan landlords track rent, tenants, maintenance and finances — all from one simple dashboard.",
+          "RentSync helps Kenyan landlords track rent, tenants, maintenance and finances, all from one simple dashboard.",
       },
       { name: "author", content: "RentSync" },
-      { property: "og:title", content: "RentSync — Smart Property Management" },
+      { property: "og:title", content: "RentSync: Smart Property Management" },
       {
         property: "og:description",
         content: "Manage every property. Collect every shilling. Built for Kenyan landlords.",

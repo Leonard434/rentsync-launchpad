@@ -9,7 +9,7 @@ export default function SiteHeader() {
         <Link to="/" className="flex items-center gap-3">
           <img
             src="/rentsync-logo.png"
-            alt="RentSync — Smart Property Management"
+            alt="RentSync: Smart Property Management"
             className="h-10 sm:h-11"
           />
           <div className="hidden flex-col leading-tight sm:flex">

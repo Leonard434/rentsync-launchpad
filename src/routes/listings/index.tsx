@@ -15,7 +15,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { listVacantListings, formatKes, displayPhotos, type VacantListing } from "@/lib/vacantListings";
+import {
+  listVacantListings,
+  formatKes,
+  displayPhotos,
+  type VacantListing,
+} from "@/lib/vacantListings";
 import { breadcrumbLd, canonicalLink, itemListLd, slugify } from "@/lib/seo";
 
 const searchSchema = z.object({
@@ -35,13 +40,15 @@ export const Route = createFileRoute("/listings/")({
   },
   head: ({ loaderData }) => ({
     meta: [
-      { title: "Vacant Houses for Rent in Kenya — Bedsitters, Single Rooms & Apartments | RentSync" },
+      {
+        title: "Vacant Houses for Rent in Kenya: Bedsitters, Single Rooms & Apartments | RentSync",
+      },
       {
         name: "description",
         content:
-          "Search vacant bedsitters, single rooms and apartments for rent across Kenya by location, type and price — listed by verified RentSync landlords. Never pay before viewing.",
+          "Search vacant bedsitters, single rooms and apartments for rent across Kenya by location, type and price, listed by verified RentSync landlords. Never pay before viewing.",
       },
-      { property: "og:title", content: "Vacant Houses for Rent — RentSync Listings" },
+      { property: "og:title", content: "Vacant Houses for Rent | RentSync Listings" },
       {
         property: "og:description",
         content: "Search vacant units listed by verified, active RentSync landlords across Kenya.",
@@ -230,7 +237,13 @@ function ListingsIndex() {
   );
 
   const [qInput, setQInput] = useState(search.q || "");
-  const [draft, setDraft] = useState({
+  const [draft, setDraft] = useState<{
+    type?: string;
+    location?: string;
+    min?: string;
+    max?: string;
+    sort?: string;
+  }>({
     type: search.type,
     location: search.location,
     min: search.min !== undefined ? String(search.min) : "",
@@ -304,7 +317,7 @@ function ListingsIndex() {
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
           <h1 className="font-serif-display text-4xl sm:text-5xl">Vacant Houses for Rent</h1>
           <p className="mt-4 max-w-2xl text-slate-300">
-            Every listing here comes from a verified, active RentSync landlord — never send money
+            Every listing here comes from a verified, active RentSync landlord. Never send money
             before viewing the property in person.
           </p>
 
@@ -417,7 +430,12 @@ function ListingsIndex() {
             {search.q && (
               <Badge variant="secondary" className="gap-1 bg-brand-100 text-brand-700">
                 "{search.q}"
-                <button onClick={() => { setQInput(""); navigate({ search: { ...search, q: undefined } }); }}>
+                <button
+                  onClick={() => {
+                    setQInput("");
+                    navigate({ search: { ...search, q: undefined } });
+                  }}
+                >
                   <X className="h-3 w-3" />
                 </button>
               </Badge>
@@ -450,7 +468,8 @@ function ListingsIndex() {
             )}
             {(search.min !== undefined || search.max !== undefined) && (
               <Badge variant="secondary" className="gap-1 bg-brand-100 text-brand-700">
-                {search.min ? formatKes(search.min) : "Ksh 0"} – {search.max ? formatKes(search.max) : "any"}
+                {search.min ? formatKes(search.min) : "Ksh 0"} –{" "}
+                {search.max ? formatKes(search.max) : "any"}
                 <button
                   onClick={() => {
                     setDraft((d) => ({ ...d, min: "", max: "" }));
@@ -477,7 +496,7 @@ function ListingsIndex() {
               No vacant units listed right now
             </h2>
             <p className="mt-1 text-sm text-slate-500">
-              Check back soon — new listings are added regularly.
+              Check back soon. New listings are added regularly.
             </p>
           </div>
         ) : filtered.length === 0 ? (

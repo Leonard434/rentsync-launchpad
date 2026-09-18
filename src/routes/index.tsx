@@ -1,6 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
-import { listVacantListings, formatKes, displayPhotos, type VacantListing } from "@/lib/vacantListings";
+import { useState, type FormEvent } from "react";
+import {
+  listVacantListings,
+  formatKes,
+  displayPhotos,
+  type VacantListing,
+} from "@/lib/vacantListings";
+import { submitSignupLead } from "@/lib/leads";
 import UnitTypeIcon from "@/components/UnitTypeIcon";
 import { canonicalLink, organizationLd } from "@/lib/seo";
 import {
@@ -24,13 +30,12 @@ import {
   HeartHandshake,
   Sparkles,
   Target,
-  Facebook,
-  Instagram,
-  Twitter,
-  Linkedin,
   MessageCircle,
   Home as HomeIcon,
   ArrowRight,
+  Landmark,
+  HardHat,
+  KeyRound,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -41,13 +46,12 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       {
-        title:
-          "RentSync — Smart Property Management & Vacant House Listings for Kenyan Landlords",
+        title: "RentSync | Smart Property Management & Vacant House Listings for Kenyan Landlords",
       },
       {
         name: "description",
         content:
-          "RentSync helps Kenyan landlords track rent, tenants, maintenance and finances — and browse vacant bedsitters, single rooms and apartments for rent across Kenya.",
+          "RentSync helps Kenyan landlords track rent, tenants, maintenance and finances, and lets house hunters browse vacant bedsitters, single rooms and apartments for rent across Kenya.",
       },
       { property: "og:url", content: "https://rentsync.co.ke/" },
       organizationLd(),
@@ -77,12 +81,17 @@ const services = [
   {
     icon: Receipt,
     title: "Smart Billing & Invoicing",
-    body: "Rent, water, service charge and one-off bills are generated automatically each month. Support for partial payments, advances, arrears and custom line items — always accurate.",
+    body: "Rent, water, service charge and one-off bills are generated automatically each month, with support for partial payments, advances, arrears and custom line items.",
   },
   {
     icon: Smartphone,
     title: "M-Pesa & Bank Payments",
-    body: "Record M-Pesa till, paybill and bank transfer payments in seconds. Every shilling is matched to the right tenant, the right unit and the right invoice — with a full audit trail.",
+    body: "Record M-Pesa till, paybill and bank transfer payments in seconds. Every shilling is matched to the right tenant, the right unit and the right invoice, with a full audit trail.",
+  },
+  {
+    icon: Landmark,
+    title: "Bank Reconciliation",
+    body: "Upload a bank statement and RentSync matches each transaction to the right tenant and invoice automatically, flagging anything unmatched instead of leaving you to check line by line.",
   },
   {
     icon: Wrench,
@@ -90,14 +99,24 @@ const services = [
     body: "Tenants report issues in-app. You assign technicians, track status from open to resolved and log actual costs against each property to keep repairs profitable.",
   },
   {
+    icon: HardHat,
+    title: "Technician Marketplace",
+    body: "Assign maintenance jobs to vetted technicians, track every job from accepted to completed, and rate their work afterwards, all from the same dashboard as everything else.",
+  },
+  {
+    icon: KeyRound,
+    title: "Vacant Listings",
+    body: "Publish your vacant units to a public directory of houses for rent in Kenya. Listings stay in sync with real occupancy automatically, so nothing needs relisting by hand.",
+  },
+  {
     icon: LayoutDashboard,
     title: "Real-Time Landlord Dashboard",
-    body: "One live view of collections, occupancy, arrears and pending actions across your entire portfolio — refreshed instantly whether you're on your phone, tablet or laptop.",
+    body: "One live view of collections, occupancy, arrears and pending actions across your entire portfolio, refreshed instantly whether you're on your phone, tablet or laptop.",
   },
   {
     icon: Bell,
     title: "Tenant Portal & Notifications",
-    body: "Tenants get their own secure login to see bills, download receipts, pay online and receive automated rent reminders and maintenance updates — reducing calls to you.",
+    body: "Tenants get their own secure login to see bills, download receipts, pay online and receive automated rent reminders and maintenance updates, so fewer calls come to you.",
   },
   {
     icon: BarChart3,
@@ -110,7 +129,7 @@ const whyPoints = [
   {
     icon: MapPin,
     title: "Built for Kenyan Landlords",
-    body: "Designed around the way rent is actually collected here — M-Pesa first, mobile first, real workflows for real properties in Nairobi and beyond.",
+    body: "Designed around the way rent is actually collected here: M-Pesa first, mobile first, with real workflows for real properties in Nairobi and beyond.",
   },
   {
     icon: Clock,
@@ -120,17 +139,17 @@ const whyPoints = [
   {
     icon: Lock,
     title: "Secure & Reliable",
-    body: "Your tenant data, payments and records are protected with modern security and daily backups — accessible only to you.",
+    body: "Your tenant data, payments and records are protected with modern security and daily backups, accessible only to you.",
   },
   {
     icon: HeartHandshake,
     title: "Fair, Transparent Pricing",
-    body: "Start free and scale as your portfolio grows. No setup fees, no hidden charges, no long contracts — ever.",
+    body: "Start free and scale as your portfolio grows, with no setup fees, no hidden charges and no long contracts.",
   },
   {
     icon: Sparkles,
     title: "Simple Enough for Anyone",
-    body: "A clean, friendly interface that any landlord — or caretaker — can pick up in minutes. No training required.",
+    body: "A clean, friendly interface that any landlord or caretaker can pick up in minutes. No training required.",
   },
   {
     icon: Target,
@@ -141,11 +160,7 @@ const whyPoints = [
 
 function Logo({ className = "h-10" }: { className?: string }) {
   return (
-    <img
-      src="/rentsync-logo.png"
-      alt="RentSync — Smart Property Management"
-      className={className}
-    />
+    <img src="/rentsync-logo.png" alt="RentSync: Smart Property Management" className={className} />
   );
 }
 
@@ -263,13 +278,12 @@ function Hero() {
             Every Tenant.
           </h1>
           <p className="mt-6 text-[11px] font-bold uppercase tracking-[0.28em] text-brand-400">
-            RentSync — Smart Property Management
+            RentSync · Smart Property Management
           </p>
           <p className="mt-6 max-w-xl text-base leading-relaxed text-slate-300 sm:text-lg">
-            Stop chasing rent on WhatsApp and paper books. RentSync gives Kenyan landlords one
-            calm, reliable place to run their rentals — track rent, manage tenants, log
-            maintenance and see the health of every property in real time, from your phone or
-            laptop.
+            Stop chasing rent on WhatsApp and paper books. RentSync gives Kenyan landlords one calm,
+            reliable place to run their rentals: track rent, manage tenants, log maintenance and see
+            the health of every property in real time, from your phone or laptop.
           </p>
           <div className="mt-10 flex flex-col gap-3 sm:flex-row">
             <a
@@ -321,7 +335,7 @@ function Services() {
           </h2>
           <p className="mt-6 text-base leading-relaxed text-slate-600 sm:text-lg">
             From onboarding your first tenant to closing the books at month-end, RentSync delivers a
-            complete rental management toolkit — built specifically for the realities of managing
+            complete rental management toolkit, built specifically for the realities of managing
             property in Kenya.
           </p>
         </div>
@@ -416,8 +430,8 @@ function FeaturedListings() {
             Houses <em className="text-brand-500">Ready to Rent</em>
           </h2>
           <p className="mt-6 text-base leading-relaxed text-slate-600 sm:text-lg">
-            Real vacant units from verified, active RentSync landlords — updated as landlords
-            publish them. Never send money before viewing in person.
+            Real vacant units from verified, active RentSync landlords, refreshed the moment a new
+            one is published. Never send money before viewing in person.
           </p>
         </div>
 
@@ -425,7 +439,7 @@ function FeaturedListings() {
           <div className="mt-16 rounded-sm border border-dashed border-slate-300 bg-white py-16 text-center">
             <HomeIcon className="mx-auto h-10 w-10 text-slate-300" />
             <p className="mt-4 text-sm font-medium text-slate-500">
-              No vacant units listed right now — check back soon.
+              No vacant units listed right now. Check back soon.
             </p>
           </div>
         ) : (
@@ -477,7 +491,7 @@ function About() {
               <div className="mt-10 grid gap-4">
                 <div className="flex items-center gap-3 text-sm text-slate-300">
                   <Phone className="h-4 w-4 shrink-0 text-brand-400" />
-                  <span>Support line — reach us any weekday</span>
+                  <span>Support line, available any weekday</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm text-slate-300">
                   <Mail className="h-4 w-4 shrink-0 text-brand-400" />
@@ -498,8 +512,8 @@ function About() {
           <div className="mt-8 space-y-5 text-base leading-relaxed text-slate-600 sm:text-lg">
             <p>
               RentSync is a smart, mobile-first property management platform designed around the
-              real rhythms of Kenyan landlords — collecting rent via M-Pesa, coordinating
-              caretakers, chasing arrears and juggling maintenance across scattered units.
+              real rhythms of Kenyan landlords: collecting rent via M-Pesa, coordinating caretakers,
+              chasing arrears and juggling maintenance across scattered units.
             </p>
             <p>
               We replace the mix of notebooks, group chats and Excel files with a single, clear
@@ -509,7 +523,7 @@ function About() {
             </p>
             <p>
               Whether you own three units in Ruaka or thirty across Nairobi, RentSync helps you
-              spend less time chasing rent — and more time growing your investment.
+              spend less time chasing rent and more time growing your investment.
             </p>
           </div>
 
@@ -585,6 +599,31 @@ function WhyUs() {
 }
 
 function Contact() {
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [error, setError] = useState("");
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    setStatus("sending");
+    setError("");
+    try {
+      await submitSignupLead({
+        name: String(data.get("name") || ""),
+        phone: String(data.get("phone") || ""),
+        email: String(data.get("email") || ""),
+        unitCount: String(data.get("units") || ""),
+        message: String(data.get("details") || ""),
+      });
+      setStatus("sent");
+      form.reset();
+    } catch (err) {
+      setStatus("error");
+      setError(err instanceof Error ? err.message : "Could not send your message.");
+    }
+  }
+
   return (
     <section id="contact" className="bg-slate-50 py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -596,7 +635,7 @@ function Contact() {
             Let's Sync Your <em className="text-brand-500">Rentals</em>
           </h2>
           <p className="mt-6 text-base leading-relaxed text-slate-600 sm:text-lg">
-            Ready to move off spreadsheets? Reach out for a walkthrough — we'll help you set up your
+            Ready to move off spreadsheets? Reach out for a walkthrough. We'll help you set up your
             first properties and tenants in minutes.
           </p>
         </div>
@@ -655,52 +694,68 @@ function Contact() {
             </a>
           </div>
 
-          <form
-            className="rounded-sm border border-slate-200 bg-white p-8 shadow-sm lg:col-span-8"
-            onSubmit={(e) => e.preventDefault()}
-          >
-            <div className="grid gap-5 sm:grid-cols-2">
-              <Field label="Full Name *" name="name" placeholder="Jane Wanjiku" required />
-              <Field label="Phone" name="phone" placeholder="0712 345 678" type="tel" />
-              <div className="sm:col-span-2">
-                <Field
-                  label="Email *"
-                  name="email"
-                  placeholder="you@example.com"
-                  type="email"
-                  required
-                />
-              </div>
-              <div className="sm:col-span-2">
-                <label className="text-[11px] font-bold uppercase tracking-widest text-slate-600">
-                  Number of Units
-                </label>
-                <select className="mt-2 w-full rounded-sm border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20">
-                  <option>1 – 5 units</option>
-                  <option>6 – 20 units</option>
-                  <option>21 – 50 units</option>
-                  <option>50+ units</option>
-                </select>
-              </div>
-              <div className="sm:col-span-2">
-                <label className="text-[11px] font-bold uppercase tracking-widest text-slate-600">
-                  Tell us about your properties *
-                </label>
-                <textarea
-                  rows={5}
-                  required
-                  placeholder="Where are your properties, how many tenants, and what are you struggling with today?"
-                  className="mt-2 w-full rounded-sm border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
-                />
-              </div>
+          {status === "sent" ? (
+            <div className="flex flex-col items-center justify-center rounded-sm border border-green-200 bg-green-50 p-8 text-center shadow-sm lg:col-span-8">
+              <CheckCircle2 className="h-10 w-10 text-green-600" />
+              <h3 className="mt-4 text-lg font-bold text-slate-900">Thanks, message sent</h3>
+              <p className="mt-2 max-w-sm text-sm text-slate-600">
+                We'll get back to you shortly. If it's urgent, chat with us on WhatsApp instead.
+              </p>
             </div>
-            <button
-              type="submit"
-              className="mt-6 inline-flex items-center justify-center rounded-md bg-[#0b1f3f] px-8 py-4 text-xs font-bold uppercase tracking-[0.2em] text-white transition hover:bg-[#122c58]"
+          ) : (
+            <form
+              className="rounded-sm border border-slate-200 bg-white p-8 shadow-sm lg:col-span-8"
+              onSubmit={handleSubmit}
             >
-              Send Message
-            </button>
-          </form>
+              <div className="grid gap-5 sm:grid-cols-2">
+                <Field label="Full Name *" name="name" placeholder="Jane Wanjiku" required />
+                <Field label="Phone" name="phone" placeholder="0712 345 678" type="tel" />
+                <div className="sm:col-span-2">
+                  <Field
+                    label="Email *"
+                    name="email"
+                    placeholder="you@example.com"
+                    type="email"
+                    required
+                  />
+                </div>
+                <div className="sm:col-span-2">
+                  <label className="text-[11px] font-bold uppercase tracking-widest text-slate-600">
+                    Number of Units
+                  </label>
+                  <select
+                    name="units"
+                    className="mt-2 w-full rounded-sm border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
+                  >
+                    <option>1 to 5 units</option>
+                    <option>6 to 20 units</option>
+                    <option>21 to 50 units</option>
+                    <option>50+ units</option>
+                  </select>
+                </div>
+                <div className="sm:col-span-2">
+                  <label className="text-[11px] font-bold uppercase tracking-widest text-slate-600">
+                    Tell us about your properties *
+                  </label>
+                  <textarea
+                    name="details"
+                    rows={5}
+                    required
+                    placeholder="Where are your properties, how many tenants, and what are you struggling with today?"
+                    className="mt-2 w-full rounded-sm border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
+                  />
+                </div>
+              </div>
+              {status === "error" && <p className="mt-4 text-sm text-red-600">{error}</p>}
+              <button
+                type="submit"
+                disabled={status === "sending"}
+                className="mt-6 inline-flex items-center justify-center rounded-md bg-[#0b1f3f] px-8 py-4 text-xs font-bold uppercase tracking-[0.2em] text-white transition hover:bg-[#122c58] disabled:opacity-60"
+              >
+                {status === "sending" ? "Sending..." : "Send Message"}
+              </button>
+            </form>
+          )}
         </div>
       </div>
     </section>
@@ -763,8 +818,8 @@ function Footer() {
               <Logo className="h-9" />
             </div>
             <p className="mt-6 max-w-sm text-sm leading-relaxed text-slate-400">
-              Smart Property Management — built for Kenyan landlords who want to spend less time
-              chasing rent and more time growing their investment.
+              Smart Property Management for Kenyan landlords who want to spend less time chasing
+              rent and more time growing their investment.
             </p>
           </div>
           <div>
@@ -802,49 +857,42 @@ function Footer() {
             </ul>
           </div>
         </div>
-        <div className="mt-10 flex items-center justify-center gap-4 border-t border-white/10 pt-8 sm:justify-start">
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-4 border-t border-white/10 pt-8 sm:justify-start">
           <a
-            href="#"
-            aria-label="Facebook"
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Chat on WhatsApp"
             className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-slate-300 transition hover:border-brand-400 hover:text-brand-400"
           >
-            <Facebook className="h-4 w-4" />
+            <MessageCircle className="h-4 w-4" />
           </a>
           <a
-            href="#"
-            aria-label="Instagram"
+            href={PHONE_TEL}
+            aria-label="Call RentSync"
             className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-slate-300 transition hover:border-brand-400 hover:text-brand-400"
           >
-            <Instagram className="h-4 w-4" />
+            <Phone className="h-4 w-4" />
           </a>
           <a
-            href="#"
-            aria-label="X"
+            href="mailto:hello@rentsync.co.ke"
+            aria-label="Email RentSync"
             className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-slate-300 transition hover:border-brand-400 hover:text-brand-400"
           >
-            <Twitter className="h-4 w-4" />
-          </a>
-          <a
-            href="#"
-            aria-label="TikTok"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-slate-300 transition hover:border-brand-400 hover:text-brand-400"
-          >
-            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor">
-              <path d="M16.6 5.82s.51.5 0 0A4.278 4.278 0 0 1 15.54 3h-3.09v12.4a2.592 2.592 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6 0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64 0 3.33 2.76 5.7 5.69 5.7 3.14 0 5.69-2.55 5.69-5.7V9.01a7.35 7.35 0 0 0 4.31 1.38V7.3s-1.88.09-3.24-1.48z" />
-            </svg>
-          </a>
-          <a
-            href="#"
-            aria-label="LinkedIn"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-slate-300 transition hover:border-brand-400 hover:text-brand-400"
-          >
-            <Linkedin className="h-4 w-4" />
+            <Mail className="h-4 w-4" />
           </a>
         </div>
 
         <div className="mt-6 border-t border-white/10 pt-6 text-center text-xs text-slate-500 sm:flex sm:items-center sm:justify-between sm:text-left">
-          © 2026 RentSync. Smart Property Management.
-          <span className="mt-2 block sm:mt-0">Made for Kenyan landlords.</span>
+          <span>&copy; 2026 RentSync. Smart Property Management.</span>
+          <span className="mt-2 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 sm:mt-0">
+            <Link to="/privacy" className="hover:text-white">
+              Privacy Policy
+            </Link>
+            <Link to="/terms" className="hover:text-white">
+              Terms of Service
+            </Link>
+          </span>
         </div>
       </div>
     </footer>

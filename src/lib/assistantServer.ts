@@ -15,6 +15,19 @@ const SUPABASE_ANON_KEY =
 const HF_ROUTER_URL = "https://router.huggingface.co/v1/chat/completions";
 const MAX_HISTORY_TURNS = 6;
 const MAX_LISTINGS_IN_CONTEXT = 40;
+// Same fallback chain as the main app's api/assistant/chat.js — see that
+// file's HF_MODELS comment for why a single hardcoded model is a single
+// point of failure. HUGGINGFACE_MODEL, if set, is tried first, then a chain
+// ordered strongest-first, weakest/most-reliable-last.
+const HF_MODELS = [
+  process.env.HUGGINGFACE_MODEL,
+  "Qwen/Qwen2.5-72B-Instruct",
+  "meta-llama/Llama-3.3-70B-Instruct",
+  "mistralai/Mistral-Small-24B-Instruct-2501",
+  "Qwen/Qwen2.5-7B-Instruct", // not gated (no license click-through, unlike Llama) — smooth zero-friction fallback
+  "meta-llama/Llama-3.1-8B-Instruct",
+  "mistralai/Mistral-7B-Instruct-v0.3",
+].filter((m): m is string => Boolean(m));
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
 
@@ -80,7 +93,10 @@ export async function handleAssistantChat(request: Request): Promise<Response> {
   });
   if (!rateLimitResponse.ok) {
     const err = await rateLimitResponse.json().catch(() => ({}));
-    return Response.json({ error: err?.message || "Too many messages recently." }, { status: 429 });
+    return Response.json(
+      { error: err?.message || "Too many messages recently.", code: "RATE_LIMITED" },
+      { status: 429 },
+    );
   }
 
   const history: ChatMessage[] = Array.isArray(body.history)
@@ -111,40 +127,32 @@ export async function handleAssistantChat(request: Request): Promise<Response> {
   ];
 
   let reply: string | undefined;
-  try {
-    const hfResponse = await fetch(HF_ROUTER_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${hfToken}` },
-      body: JSON.stringify({
-        // Qwen2.5 is not gated (unlike Meta's Llama models, which require
-        // accepting a license on huggingface.co before they'll serve
-        // inference) — a smoother zero-friction default for a free-tier setup.
-        model: process.env.HUGGINGFACE_MODEL || "Qwen/Qwen2.5-7B-Instruct",
-        messages,
-        max_tokens: 400,
-        temperature: 0.4,
-      }),
-    });
-    const data = await hfResponse.json();
-    if (!hfResponse.ok) {
-      return Response.json(
-        { error: data?.error?.message || data?.error || "Assistant request failed" },
-        { status: 502 },
-      );
+  let lastError = "Assistant request failed";
+  for (const model of HF_MODELS) {
+    try {
+      const hfResponse = await fetch(HF_ROUTER_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${hfToken}` },
+        body: JSON.stringify({ model, messages, max_tokens: 400, temperature: 0.4 }),
+      });
+      const data = await hfResponse.json().catch(() => ({}));
+      if (!hfResponse.ok) {
+        lastError = data?.error?.message || data?.error || `${model} request failed`;
+        continue; // try the next model — this one may be cold/unavailable/gated
+      }
+      const candidate: string | undefined = data?.choices?.[0]?.message?.content?.trim();
+      if (!candidate) {
+        lastError = `${model} returned an empty response`;
+        continue;
+      }
+      reply = candidate;
+      break;
+    } catch (error) {
+      lastError = "Could not reach " + model + ": " + (error instanceof Error ? error.message : String(error));
+      // network-level failure on this model — keep trying the rest
     }
-    reply = data?.choices?.[0]?.message?.content?.trim();
-    if (!reply)
-      return Response.json({ error: "Assistant returned an empty response" }, { status: 502 });
-  } catch (error) {
-    return Response.json(
-      {
-        error:
-          "Could not reach the assistant: " +
-          (error instanceof Error ? error.message : String(error)),
-      },
-      { status: 502 },
-    );
   }
+  if (!reply) return Response.json({ error: lastError }, { status: 502 });
 
   callRpc("log_assistant_conversation", {
     p_source: "launchpad",

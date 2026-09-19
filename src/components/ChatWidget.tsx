@@ -8,6 +8,8 @@ type ChatMessage = { role: "user" | "assistant"; content: string };
 
 const FALLBACK_MESSAGE =
   "I couldn't reach the assistant right now. Try again in a moment, or reach us on WhatsApp (+254 758 445 536) or hello@rentsync.co.ke.";
+const RATE_LIMIT_MESSAGE =
+  "You've sent a lot of messages in a short time. Please wait a bit before asking again, or reach us on WhatsApp (+254 758 445 536) or hello@rentsync.co.ke.";
 
 // Floating chat widget mounted once in __root.tsx so it appears on every
 // route. Answers RentSync questions via the /api/assistant/chat branch in
@@ -53,7 +55,14 @@ export default function ChatWidget() {
         body: JSON.stringify({ message: text, history: nextMessages.slice(0, -1).slice(-6) }),
       });
       const body = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(body.error || "Assistant request failed");
+      if (!response.ok) {
+        const isRateLimited = body.code === "RATE_LIMITED" || response.status === 429;
+        setMessages((prev) => [
+          ...prev,
+          { role: "assistant", content: isRateLimited ? RATE_LIMIT_MESSAGE : FALLBACK_MESSAGE },
+        ]);
+        return;
+      }
       setMessages((prev) => [...prev, { role: "assistant", content: body.reply }]);
     } catch {
       setMessages((prev) => [...prev, { role: "assistant", content: FALLBACK_MESSAGE }]);
